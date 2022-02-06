@@ -1,9 +1,10 @@
-import { PrismaClient } from '@prisma/client'
+import client from '../../client';
 import * as status from './status.seed'
 import * as user from './user.seed'
-import * as todoPatch1 from '../patch/todo.patch.20220204_1'
+import dotenv from 'dotenv';
 
-const prisma = new PrismaClient();
+dotenv.config();
+
 
 /**
  * Seeding is the process of adding new data. 
@@ -11,11 +12,11 @@ const prisma = new PrismaClient();
  */
 
 const main = async (): Promise<void> => {
-    await status.seed(prisma);
-    await user.seed(prisma);
-    await todoPatch1.patch(prisma);
+    await status.seed(client);
+    await user.seed(client);
+    //await todoPatch1.patch(prisma);
 }
 
 main()
-    .catch( e => { throw e })
-    .finally( async () => await prisma.$disconnect() );
+    .catch(e => { throw e })
+    .finally(async () => await client.$disconnect());
