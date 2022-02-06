@@ -1,0 +1,52 @@
+datasource db {
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+generator client {
+    provider = "prisma-client-js"
+}
+
+model status {
+    id Int @id @default(autoincrement())
+    name String @unique @db.VarChar(32)
+    description String? @db.VarChar(256)
+    to_dos to_do[]
+}
+
+model to_do {
+    id Int @id @default(autoincrement())
+    created_on DateTime @default(now())
+    updated_on DateTime @updatedAt
+    title String @db.VarChar(64)
+    description String? @db.VarChar(256)
+    deadline DateTime?
+    status status @relation(fields: [status_id], references: [id])
+    status_id Int @default(0)
+    created_by user @relation(name: "created_by", fields: [created_by_id], references: [id])
+    created_by_id Int
+    assigned_to user @relation(name: "assigned_to", fields: [assigned_to_id], references: [id])
+    assigned_to_id Int
+}
+
+model user {
+    id Int @id @default(autoincrement())
+    created_on DateTime @default(now())
+    updated_on DateTime @updatedAt
+    username String @db.VarChar(64) @unique()
+    email_address String @db.VarChar(256) @unique()
+    password_hash String @db.VarChar(64)
+    email_address_confirmed Boolean @default(false)
+    to_dos_created to_do[] @relation(name: "created_by")
+    to_dos_assigned to_do[] @relation(name: "assigned_to")
+    sessions user_session[]
+}
+
+model user_session {
+    id Int @id @default(autoincrement())
+    session_token String @db.Char(128) @unique()
+    created_on DateTime @default(now())
+    updated_on DateTime @updatedAt
+    expires_on DateTime
+    user user @relation(fields: [user_id], references: [id])
+    user_id Int
+}
