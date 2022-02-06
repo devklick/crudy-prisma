@@ -5,8 +5,8 @@ import logger from 'morgan';
 
 import userController from './controller/user-controller';
 import todoController from './controller/todo-controller';
+import apiConfig from './config/api-config';
 
-const port = Number(process.env.PORT || 3023);
 const app = express();
 
 app.use(logger('dev'));
@@ -18,6 +18,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user', userController);
 app.use('/todo', todoController);
 
-app.listen(port, () => {
-	console.log(`Running on port ${port}.`);
+app.listen(apiConfig.port, () => {
+	console.log(`Running on port ${apiConfig.port}.`);
 });
