@@ -21,15 +21,15 @@ const password = z
 export const userCreateSchema = z.object({
 	// prettier-ignore
 	username: username.refine(async value => {
-			const existing = await userService.getUserByUsername(value);
-			if (!existing.success) return true;
-		}, { message: 'Username already exists', }
+		const existing = await userService.getUserByUsername(value);
+		if (!existing.success) return true;
+	}, { message: 'Username already exists', }
 	),
 	// prettier-ignore
 	emailAddress: emailAddress.refine(async value => {
-			const existing = await userService.getUserByEmailAddress(value);
-			if (!existing.success) return true;
-		}, { message: 'Email address already registered', }
+		const existing = await userService.getUserByEmailAddress(value);
+		if (!existing.success) return true;
+	}, { message: 'Email address already registered', }
 	),
 	password,
 	emailAddressConfirmed, // for dev/testing only
@@ -47,7 +47,7 @@ export const userDetailSchema = z.object({
 
 export const userGetSchema = z.object({
 	id: zRouteNumericId(),
-	userSession: userSessionDetailSchema,
+	session: userSessionDetailSchema,
 });
 
 export const userLoginSchema = z.object({
