@@ -1,54 +1,45 @@
 import { UserCreateType, UserDetailType } from '../api-models/user-schema';
 import { Create, failed, Find, Get, Result, success } from './service-types';
 import client from '../db/client';
-import { Prisma } from '@prisma/client';
+import { Prisma, user } from '@prisma/client';
 import cryptoUtils from '../utilities/crypto-utils';
+import mapper from '../mapper';
 
 export const createUser: Create<UserCreateType, UserDetailType> = async (
 	item: UserCreateType
 ): Promise<Result<UserDetailType>> => {
-	const result = await client.user.create({
-		data: {
-			username: item.username,
-			email_address: item.emailAddress,
-			email_address_confirmed: item.emailAddressConfirmed,
-			password_hash: await cryptoUtils.hashString(item.password),
-		},
-	});
-	if (!result) {
+	const data = await mapper.mapAsync<UserCreateType, user>(
+		item,
+		'user',
+		'UserCreateType'
+	);
+	const entity = await client.user.create({ data });
+
+	if (!entity) {
 		return failed('Failed to create user');
 	}
-	return success<UserDetailType>({
-		id: result.id,
-		username: result.username,
-		createdOn: result.created_on,
-		updatedOn: result.updated_on,
-		emailAddress: result.email_address,
-		emailAddressConfirmed: result.email_address_confirmed,
-		passwordHash: result.password_hash,
-	});
+	const model = await mapper.mapAsync<user, UserDetailType>(
+		entity,
+		'UserDetailType',
+		'user'
+	);
+	return success(model);
 };
 
 export const getUser: Get<UserDetailType> = async (
 	id: number
 ): Promise<Result<UserDetailType>> => {
-	const result = await client.user.findFirst({
+	const entity = await client.user.findFirst({
 		where: {
 			id,
 		},
 	});
-	if (!result) {
+	if (!entity) {
 		return failed('Not found');
 	}
-	return success<UserDetailType>({
-		id: result.id,
-		username: result.username,
-		createdOn: result.created_on,
-		updatedOn: result.updated_on,
-		emailAddress: result.email_address,
-		emailAddressConfirmed: result.email_address_confirmed,
-		passwordHash: result.password_hash,
-	});
+	const model = await mapper.mapAsync<user, UserDetailType>(entity, 'UserDetailType', 'user');
+
+	return success(model);
 };
 
 export const findUsers: Find<UserDetailType> = async (
@@ -79,23 +70,16 @@ export const findUsers: Find<UserDetailType> = async (
 		filters.push({ username: query.username });
 	}
 
-	const result = await client.user.findMany({
+	const entities = await client.user.findMany({
 		where: {
 			OR: filters,
 		},
 	});
 
-	const data: UserDetailType[] = result.map(row => ({
-		id: row.id,
-		username: row.username,
-		createdOn: row.created_on,
-		updatedOn: row.updated_on,
-		emailAddress: row.email_address,
-		emailAddressConfirmed: row.email_address_confirmed,
-		passwordHash: row.password_hash,
-	}));
+	const models: UserDetailType[] = await Promise.all(entities.map(async user =>
+		await mapper.mapAsync<user, UserDetailType>(user, 'UserDetailType', 'user')));
 
-	return success<UserDetailType[]>(data);
+	return success<UserDetailType[]>(models);
 };
 
 export const getUserByUsername = async (username: string): Promise<Result<UserDetailType>> => {
@@ -104,7 +88,7 @@ export const getUserByUsername = async (username: string): Promise<Result<UserDe
 	if (!users.success) {
 		return failed(...users.errors);
 	}
-	if (users.data.length != 1) {
+	if (users.data.length !== 1) {
 		return failed('Not found');
 	}
 	return success(users.data[0]);
@@ -117,7 +101,7 @@ export const getUserByEmailAddress = async (
 	if (!users.success) {
 		return failed(...users.errors);
 	}
-	if (users.data.length != 1) {
+	if (users.data.length !== 1) {
 		return failed('Not found');
 	}
 	return success(users.data[0]);
@@ -144,6 +128,7 @@ export const getAuthenticatedUser = async (
 	return failed('Incorrect password');
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
 	createUser,
 	getUser,

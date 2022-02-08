@@ -3,12 +3,11 @@ import { TodoCreateType, TodoDetailType } from '../../api-models/todo-schema';
 import { StatusIds } from '../../db/data/seed/status.seed';
 
 import {
-	CamelCaseNamingConvention,
 	mapFrom,
 	MappingProfile,
-	SnakeCaseNamingConvention,
 } from '@automapper/core';
 import { to_do } from '@prisma/client';
+import { apiToDbNamingConvention, dbToApiNamingConvention } from '../defaults';
 
 createMetadataMap<TodoCreateType>('TodoCreateType', {
 	title: String,
@@ -45,10 +44,7 @@ createMetadataMap<to_do>('to_do', {
 const todoMappingProfile: MappingProfile = mapper => {
 	mapper
 		.createMap<TodoCreateType, to_do>('TodoCreateType', 'to_do', {
-			namingConventions: {
-				source: new CamelCaseNamingConvention(),
-				destination: new SnakeCaseNamingConvention(),
-			},
+			namingConventions: apiToDbNamingConvention
 		})
 		.forMember(
 			dest => dest.status_id,
@@ -65,10 +61,7 @@ const todoMappingProfile: MappingProfile = mapper => {
 
 	mapper
 		.createMap<to_do, TodoDetailType>('to_do', 'TodoDetailType', {
-			namingConventions: {
-				source: new SnakeCaseNamingConvention(),
-				destination: new CamelCaseNamingConvention(),
-			},
+			namingConventions: dbToApiNamingConvention
 		})
 		.forMember(
 			dest => dest.status,
