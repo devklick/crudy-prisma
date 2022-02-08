@@ -7,8 +7,11 @@ This is an API written in TypeScript, which utilises:
 - Autmapper to map between API and DB objects
 - Postgres as the data store
 
+## Purpose 
+It's purpose is purely for eduction and fun - I wanted to experiment with the technologies mentioned above (mainly Prisma).
+
 ## The application
-The app is/will be a simple to-do list, where users can register accounts to create and track to-do's.
+The app is/will be a simple to-do list, where users can register accounts to create and track to-do's. At the time of writing this, it's simply an API with a couple of enpoints and a DB with a couple of tables.
 
 # Getting started
 You will need a Postgres DB instance - see [Postgres Instructions](https://www.postgresql.org/download/) (or you can try teaking the `prisma.schema` to use a different DB server).
