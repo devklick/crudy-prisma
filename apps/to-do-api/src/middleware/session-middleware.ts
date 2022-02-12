@@ -23,8 +23,11 @@ const middleware = async (
     if (accessToken.startsWith('Bearer ')) {
         accessToken = accessToken.substring('Bearer '.length);
     }
-    const decoded = jwt.verify(accessToken, config.jwtSecret) as JwtPayload;
-    const parsed = await userSessionDetailSchema.safeParseAsync(decoded.data);
+    const decoded = verifyToken(accessToken, config.jwtSecret);
+    if (!decoded) {
+        return res.status(401).send('Invalid token');
+    }
+    const parsed = await userSessionDetailSchema.safeParseAsync(decoded?.data);
     if (!parsed.success) {
         return res.status(401).send('Invalid token');
     }
@@ -41,6 +44,16 @@ const middleware = async (
     req.session = sessions.data[0];
 
     return next();
+};
+
+const verifyToken = (token: string, secret: string): JwtPayload | null => {
+    let decoded: JwtPayload | null = null;
+    jwt.verify(token, secret, (error, token) => {
+        if (!error) {
+            decoded = token as JwtPayload;
+        }
+    });
+    return decoded;
 };
 
 export default middleware;
