@@ -1,42 +1,39 @@
-lib-cov
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-*.swp
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-pids
-logs
-results
-tmp
+# compiled output
+/dist
+/tmp
+/out-tsc
 
-# Build
-public/css/main.css
+# dependencies
+/node_modules
 
-# Coverage reports
-coverage
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# API keys and secrets
-.env
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# Dependency directory
-node_modules
-bower_components
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
 
-# Editors
-.idea
-*.iml
-
-# OS metadata
+# System Files
 .DS_Store
 Thumbs.db
-
-# Ignore built ts files
-dist/**/*
-
-# ignore yarn.lock
-yarn.lock
-.vscode/settings.json

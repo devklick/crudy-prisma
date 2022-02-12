@@ -1,0 +1,25 @@
+{
+    "root": "libs/service-framework/controller",
+    "sourceRoot": "libs/service-framework/controller/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": [
+                    "libs/service-framework/controller/**/*.ts"
+                ]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/service-framework/controller"],
+            "options": {
+                "jestConfig": "libs/service-framework/controller/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

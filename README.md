@@ -1,6 +1,7 @@
 # Crudy Prisma
 
 This is an API written in TypeScript, which utilises:
+- NX Workspace monorepo 
 - Express as the API framework
 - Zod for schema parsing & validation
 - Prisma as an ORM
@@ -8,7 +9,7 @@ This is an API written in TypeScript, which utilises:
 - Postgres as the data store
 
 ## Purpose 
-It's purpose is purely for eduction and fun - I wanted to experiment with the technologies mentioned above (mainly Prisma).
+It's purpose is purely for eduction and fun - I wanted to experiment with the technologies mentioned above.
 
 ## The application
 The app is/will be a simple to-do list, where users can register accounts to create and track to-do's. At the time of writing this, it's simply an API with a couple of enpoints and a DB with a couple of tables.
@@ -33,6 +34,3 @@ Finally, it should just be a case of running the development server:
 ```
 npm run dev
 ```
-
-# Future Plans
-There will obviously need to be a front end to this. The front end will most likely be written in react. The repo will most likely be refactored to use nx workspace as a monorepo.

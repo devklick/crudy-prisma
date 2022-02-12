@@ -1,0 +1,23 @@
+{
+    "root": "libs/utilities/crypto-utils",
+    "sourceRoot": "libs/utilities/crypto-utils/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/utilities/crypto-utils/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/utilities/crypto-utils"],
+            "options": {
+                "jestConfig": "libs/utilities/crypto-utils/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

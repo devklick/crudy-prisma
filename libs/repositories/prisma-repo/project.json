@@ -1,0 +1,40 @@
+{
+    "root": "libs/repositories/prisma-repo",
+    "sourceRoot": "libs/repositories/prisma-repo/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/repositories/prisma-repo/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/repositories/prisma-repo"],
+            "options": {
+                "jestConfig": "libs/repositories/prisma-repo/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "build":{
+            "executor": "@nrwl/node:build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/repositories/prisma-repo",
+                "tsConfig": "libs/repositories/prisma-repo/tsconfig.lib.json",
+                "main": "libs/repositories/prisma-repo/src/data/seed/index.ts",
+                "watch": false
+            }
+        },
+        "seed": {
+            "executor": "@nrwl/node:execute",
+            "options": {
+                "buildTarget": "repositories-prisma-repo:build",
+                "watch": false
+            }
+        }
+    },
+    "tags": []
+}

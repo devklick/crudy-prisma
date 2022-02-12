@@ -1,0 +1,67 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2017", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "strict": true,
+        "strictNullChecks": true,
+        "typeRoots": ["@types", "./node_modules/@types"],
+        "paths": {
+            "@to-do/api-schemas/common": [
+                "libs/api-schemas/common/src/index.ts"
+            ],
+            "@to-do/api-schemas/todo-schema": [
+                "libs/api-schemas/todo-schema/src/index.ts"
+            ],
+            "@to-do/api-schemas/user-schema": [
+                "libs/api-schemas/user-schema/src/index.ts"
+            ],
+            "@to-do/api-schemas/user-session-schema": [
+                "libs/api-schemas/user-session-schema/src/index.ts"
+            ],
+            "@to-do/mapper": ["libs/mapper/src/index.ts"],
+            "@to-do/repositories/prisma-repo": [
+                "libs/repositories/prisma-repo/src/index.ts"
+            ],
+            "@to-do/service-framework/controller": [
+                "libs/service-framework/controller/src/index.ts"
+            ],
+            "@to-do/service-framework/service": [
+                "libs/service-framework/service/src/index.ts"
+            ],
+            "@to-do/services/to-do-service": [
+                "libs/services/to-do-service/src/index.ts"
+            ],
+            "@to-do/services/user-service": [
+                "libs/services/user-service/src/index.ts"
+            ],
+            "@to-do/services/user-session-service": [
+                "libs/services/user-session-service/src/index.ts"
+            ],
+            "@to-do/utilities/crypto-utils": [
+                "libs/utilities/crypto-utils/src/index.ts"
+            ],
+            "@to-do/utilities/environment-utils": [
+                "libs/utilities/environment-utils/src/index.ts"
+            ],
+            "@to-do/validators/to-do-validator": [
+                "libs/validators/to-do-validator/src/index.ts"
+            ],
+            "@to-do/validators/user-validator": [
+                "libs/validators/user-validator/src/index.ts"
+            ]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
+}

@@ -1,0 +1,23 @@
+{
+    "root": "libs/validators/to-do-validator",
+    "sourceRoot": "libs/validators/to-do-validator/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/validators/to-do-validator/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/validators/to-do-validator"],
+            "options": {
+                "jestConfig": "libs/validators/to-do-validator/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}
