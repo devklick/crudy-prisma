@@ -1,7 +1,3 @@
-# mapper
+# Mapper
 
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test mapper` to execute the unit tests via [Jest](https://jestjs.io).
+The mapper converts to/from API/DB objects and is used by each of the services.

@@ -1,7 +1,2 @@
-# validators-user-validator
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test validators-user-validator` to execute the unit tests via [Jest](https://jestjs.io).
+# User Validator
+This is where you can find any custom validation logic that the API user-schema requires in order to determine whether data can be considered valid or not.

@@ -1,7 +1,2 @@
-# service-framework-controller
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test service-framework-controller` to execute the unit tests via [Jest](https://jestjs.io).
+# Controller Framework
+This library contains some of the common-code that is required (or may eventually be required) by the controller layer(s).

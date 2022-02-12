@@ -1,7 +1,2 @@
-# api-schemas-user-schema
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test api-schemas-user-schema` to execute the unit tests via [Jest](https://jestjs.io).
+# User Schema
+This library contains (or will eventually contain) all of the API schemas for a caller to interact with the "user" entity.

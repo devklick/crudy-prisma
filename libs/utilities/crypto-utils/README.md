@@ -1,7 +1,2 @@
-# utilities-crypto-utils
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test utilities-crypto-utils` to execute the unit tests via [Jest](https://jestjs.io).
+# Crypto Utils
+A library consisting of helper functions related to cryptography, such as password hashing, comparing hashes etc. 

@@ -1,7 +1,2 @@
-# services-user-service
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test services-user-service` to execute the unit tests via [Jest](https://jestjs.io).
+# User Service
+This service contains the logic required for processing "user" entities. Typically this will involve basic CRUD operations.

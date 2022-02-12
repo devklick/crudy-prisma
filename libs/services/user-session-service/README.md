@@ -1,7 +1,2 @@
-# services-user-session-service
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test services-user-session-service` to execute the unit tests via [Jest](https://jestjs.io).
+# User Session Service
+This service contains the logic required for processing "user session" entities. Typically this will involve basic CRUD operations.

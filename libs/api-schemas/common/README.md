@@ -1,7 +1,2 @@
-# api-schemas-common
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test api-schemas-common` to execute the unit tests via [Jest](https://jestjs.io).
+# Common
+This library contains some of the common code that is required by two or more of the API Schemas.

@@ -1,0 +1,2 @@
+# Services
+This folder contains a collection of libraries, where each library is a service. The service layer is responsible for bridging the gap between the controller layer and the repo layer. Each service should be specific to one entity, where possible.

@@ -1,7 +1,2 @@
-# services-to-do-service
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test services-to-do-service` to execute the unit tests via [Jest](https://jestjs.io).
+# Todo Service
+This service contains the logic required for processing "todo" entities. Typically this will involve basic CRUD operations.

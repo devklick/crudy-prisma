@@ -1,7 +1,2 @@
-# repositories-prisma-repo
-
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test repositories-prisma-repo` to execute the unit tests via [Jest](https://jestjs.io).
+# Prisma Repository
+The prisma repo contains the prisma client, the schema defintion, migration scrips and data-seeding scripts, for *all* entities in the application.
