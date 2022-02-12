@@ -1,94 +1,36 @@
+# Crudy Prisma
 
+This is an API written in TypeScript, which utilises:
+- NX Workspace monorepo 
+- Express as the API framework
+- Zod for schema parsing & validation
+- Prisma as an ORM
+- Autmapper to map between API and DB objects
+- Postgres as the data store
 
-# ToDo
+## Purpose 
+It's purpose is purely for eduction and fun - I wanted to experiment with the technologies mentioned above.
 
-This project was generated using [Nx](https://nx.dev).
+## The application
+The app is/will be a simple to-do list, where users can register accounts to create and track to-do's. At the time of writing this, it's simply an API with a couple of enpoints and a DB with a couple of tables.
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+# Getting started
+You will need a Postgres DB instance - see [Postgres Instructions](https://www.postgresql.org/download/) (or you can try teaking the `prisma.schema` to use a different DB server).
+After cloning/forking the code, you'll need an `.env` file with the following variables:
+| Name     | Type     | Description             | Example                 | Default                 |
+|----------|----------|-------------------------|-------------------------|-------------------------|
+| PORT | Integer | The port the API listen on for requests | 3000 | 3023 |
+| DATABASE_URL | String | The URL of the database as required by Prisma. See [Postgresql Database Connectors](https://www.prisma.io/docs/concepts/database-connectors/postgresql) | `postgresql://dbuser:dbpassword@localhost:5432/todo`
+| SYSTEM_USER_PASSWORD | String | A "system" user will be automatically added to the DB in a later step. This variable specifies the password for the system user. | `S00perS3cretP4ssw()rd!` | |
+| JWT_SECRET | String | A secret key that will be used to sign and verify JWT's | `83TT3R_M4k3it_4G00d1` | |
 
-🔎 **Smart, Fast and Extensible Build System**
+Now you have your environment variables set up, it should just be a case of installing the package:
+```
+npm i
+```
+Installing the package also creates the database & tables etc, and seed any data (such as our system user).
 
-## Adding capabilities to your workspace
-
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
-
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
-
-Below are our core plugins:
-
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
-
-There are also many [community plugins](https://nx.dev/community) you could add.
-
-## Generate an application
-
-Run `nx g @nrwl/react:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@to-do/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+Finally, it should just be a case of running the development server:
+```
+npm run dev
+```
