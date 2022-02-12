@@ -1,0 +1,25 @@
+{
+    "root": "libs/api-schemas/user-session-schema",
+    "sourceRoot": "libs/api-schemas/user-session-schema/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": [
+                    "libs/api-schemas/user-session-schema/**/*.ts"
+                ]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/api-schemas/user-session-schema"],
+            "options": {
+                "jestConfig": "libs/api-schemas/user-session-schema/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

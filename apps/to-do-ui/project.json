@@ -1,0 +1,74 @@
+{
+    "root": "apps/to-do-ui",
+    "sourceRoot": "apps/to-do-ui/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/web:webpack",
+            "outputs": ["{options.outputPath}"],
+            "defaultConfiguration": "production",
+            "options": {
+                "compiler": "babel",
+                "outputPath": "dist/apps/to-do-ui",
+                "index": "apps/to-do-ui/src/index.html",
+                "baseHref": "/",
+                "main": "apps/to-do-ui/src/main.tsx",
+                "polyfills": "apps/to-do-ui/src/polyfills.ts",
+                "tsConfig": "apps/to-do-ui/tsconfig.app.json",
+                "assets": [
+                    "apps/to-do-ui/src/favicon.ico",
+                    "apps/to-do-ui/src/assets"
+                ],
+                "styles": ["apps/to-do-ui/src/styles.scss"],
+                "scripts": [],
+                "webpackConfig": "@nrwl/react/plugins/webpack"
+            },
+            "configurations": {
+                "production": {
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/to-do-ui/src/environments/environment.ts",
+                            "with": "apps/to-do-ui/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "optimization": true,
+                    "outputHashing": "all",
+                    "sourceMap": false,
+                    "namedChunks": false,
+                    "extractLicenses": true,
+                    "vendorChunk": false
+                }
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/web:dev-server",
+            "options": {
+                "buildTarget": "to-do-ui:build",
+                "hmr": true,
+                "proxyConfig": "apps/to-do-ui/proxy.conf.json"
+            },
+            "configurations": {
+                "production": {
+                    "buildTarget": "to-do-ui:build:production",
+                    "hmr": false
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/to-do-ui/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/apps/to-do-ui"],
+            "options": {
+                "jestConfig": "apps/to-do-ui/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

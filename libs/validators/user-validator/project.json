@@ -1,0 +1,23 @@
+{
+    "root": "libs/validators/user-validator",
+    "sourceRoot": "libs/validators/user-validator/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/validators/user-validator/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/validators/user-validator"],
+            "options": {
+                "jestConfig": "libs/validators/user-validator/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

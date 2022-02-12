@@ -1,0 +1,23 @@
+{
+    "root": "libs/services/to-do-service",
+    "sourceRoot": "libs/services/to-do-service/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/services/to-do-service/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/services/to-do-service"],
+            "options": {
+                "jestConfig": "libs/services/to-do-service/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

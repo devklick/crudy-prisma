@@ -1,0 +1,23 @@
+{
+    "root": "libs/api-schemas/todo-schema",
+    "sourceRoot": "libs/api-schemas/todo-schema/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/api-schemas/todo-schema/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/api-schemas/todo-schema"],
+            "options": {
+                "jestConfig": "libs/api-schemas/todo-schema/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

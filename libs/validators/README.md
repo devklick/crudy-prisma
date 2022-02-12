@@ -1,0 +1,2 @@
+# Validators
+Validators are helpers used by the API schema models to perform validation and determine whether or not data meets the requirements. They integrate directly with the repository layer rather than going through the service layer in order to avoid a circular dependency. In most cases, validation will be performed in the schema layer without having to integrate with the repository layer, however in some cases it's necesary to validate data against the database (for example, checking if an email address has already been used).

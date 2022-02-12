@@ -1,0 +1,23 @@
+{
+    "root": "libs/services/user-service",
+    "sourceRoot": "libs/services/user-service/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/services/user-service/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/services/user-service"],
+            "options": {
+                "jestConfig": "libs/services/user-service/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

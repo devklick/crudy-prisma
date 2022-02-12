@@ -1,0 +1,25 @@
+{
+    "root": "libs/services/user-session-service",
+    "sourceRoot": "libs/services/user-session-service/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": [
+                    "libs/services/user-session-service/**/*.ts"
+                ]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/services/user-session-service"],
+            "options": {
+                "jestConfig": "libs/services/user-session-service/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}
