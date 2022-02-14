@@ -12,7 +12,7 @@ const deadline = zDate().optional().nullable();
 const status = z.nativeEnum(StatusIds);
 const createdById = z.number().int();
 const assignedToId = z.number().int();
-const userSession = userSessionDetailSchema;
+const session = userSessionDetailSchema;
 
 export const todoCreateSchema = z.object({
     title,
@@ -21,7 +21,7 @@ export const todoCreateSchema = z.object({
     status,
     // Only an authenticated user can create a todo item, so we expect a user session.
     // This is taken care of by the session-middleware.
-    userSession,
+    session,
 
     // This is optional when creating a todo item.
     // If it's not specified, the todo item will automatically be assigned to the authenticated user.
@@ -44,7 +44,7 @@ export const todoGetSchema = z.object({
     id: zRouteNumericId(),
     // Only an authenticated user can create a todo item, so we expect a user session.
     // This is taken care of by the session-middleware.
-    userSession,
+    userSession: session,
 });
 
 export const todoUpdateSchema = z
@@ -66,6 +66,7 @@ export const todoUpdateSchema = z
         assignedToId: true,
     });
 
+export type TodoGetType = z.infer<typeof todoGetSchema>;
 export type TodoCreateType = z.infer<typeof todoCreateSchema>;
 export type TodoUpdateType = z.infer<typeof todoUpdateSchema>;
 export type TodoDetailType = z.infer<typeof todoDetailSchema>;

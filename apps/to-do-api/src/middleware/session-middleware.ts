@@ -4,6 +4,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { userSessionDetailSchema } from '@to-do/api-schemas/user-session-schema';
 import userSessionService from '@to-do/services/user-session-service';
 
+const BEARER_PREFIX = 'Bearer ';
 /**
  * Takes the session token from the header and validates it.
  * If no session token is present, or the session token is invalid or expired, the caller is unauthorised.
@@ -20,8 +21,8 @@ const middleware = async (
     if (!accessToken || typeof accessToken !== 'string') {
         return res.status(401).send('Not authenticated');
     }
-    if (accessToken.startsWith('Bearer ')) {
-        accessToken = accessToken.substring('Bearer '.length);
+    if (accessToken.startsWith(BEARER_PREFIX)) {
+        accessToken = accessToken.substring(BEARER_PREFIX.length);
     }
     const decoded = verifyToken(accessToken, config.jwtSecret);
     if (!decoded) {
