@@ -49,13 +49,11 @@ const todoMappingProfile: MappingProfile = (mapper) => {
         )
         .forMember(
             (dest) => dest.created_by_id,
-            mapFrom((source) => source.userSession.userId)
+            mapFrom((source) => source.session.userId)
         )
         .forMember(
             (dest) => dest.assigned_to_id,
-            mapFrom(
-                (source) => source.assignedToId ?? source.userSession.userId
-            )
+            mapFrom((source) => source.assignedToId ?? source.session.userId)
         );
 
     mapper

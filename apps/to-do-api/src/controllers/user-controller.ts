@@ -1,7 +1,7 @@
 import {
-    userCreateSchema,
-    userGetSchema,
-    userLoginSchema,
+    UserCreateType,
+    UserGetType,
+    UserLoginType,
 } from '@to-do/api-schemas/user-schema';
 import { ActionMethod, respond } from '@to-do/service-framework/controller';
 import userService from '@to-do/services/user-service';
@@ -10,18 +10,9 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 
 export const getUser: ActionMethod = async (req, res) => {
-    // Because the sessionMiddleware adds the authenticated userSession to the request body,
-    // and this is expected by the schema, we spread the URL params and request body into a new object to validate.
-    const validation = await userGetSchema.safeParseAsync({
-        ...req.params,
-        session: req.session,
-    });
-
-    if (!validation.success) {
-        return respond(res, 400, validation.error.errors);
-    }
-
-    const result = await userService.getUser(validation.data.id);
+    const result = await userService.getUser(
+        (req.validatedData as UserGetType).id
+    );
 
     if (result.success) {
         return respond(res, 200, result.data);
@@ -31,13 +22,9 @@ export const getUser: ActionMethod = async (req, res) => {
 };
 
 export const createUser: ActionMethod = async (req, res) => {
-    const validation = await userCreateSchema.safeParseAsync(req.body);
-
-    if (!validation.success) {
-        return respond(res, 400, validation.error.errors);
-    }
-
-    const result = await userService.createUser(validation.data);
+    const result = await userService.createUser(
+        req.validatedData as UserCreateType
+    );
 
     if (result.success) {
         return respond(res, 200, result.data);
@@ -47,12 +34,9 @@ export const createUser: ActionMethod = async (req, res) => {
 };
 
 export const login: ActionMethod = async (req, res) => {
-    const validation = await userLoginSchema.safeParseAsync(req.body);
+    const { emailAddressOrUsername, password } =
+        req.validatedData as UserLoginType;
 
-    if (!validation.success) {
-        return respond(res, 400, validation.error.errors);
-    }
-    const { emailAddressOrUsername, password } = validation.data;
     const user = await userService.getAuthenticatedUser(
         emailAddressOrUsername,
         password
