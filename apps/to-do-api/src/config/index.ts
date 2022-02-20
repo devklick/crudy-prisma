@@ -5,7 +5,17 @@ const config = {
         requirement: 'PREFERRED',
         defaultValue: 3023,
     }),
-    jwtSecret: getEnvVar<string>('JWT_SECRET', { requirement: 'REQUIRED' }),
+    jwt: {
+        secret: getEnvVar<string>('JWT_SECRET', { requirement: 'REQUIRED' }),
+        accessTokenDuration: getEnvVar<number>('JWT_ACCESS_TOKEN_DURATION', {
+            requirement: 'OPTIONAL',
+            defaultValue: 3600,
+        }),
+        refreshTokenDuration: getEnvVar<number>('JWT_REFRESH_TOKEN_DURATION', {
+            requirement: 'OPTIONAL',
+            defaultValue: 86400,
+        }),
+    },
 };
 
 export default config;

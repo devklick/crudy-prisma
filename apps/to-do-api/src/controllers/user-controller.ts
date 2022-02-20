@@ -27,7 +27,7 @@ export const createUser: ActionMethod = async (req, res) => {
     );
 
     if (result.success) {
-        return respond(res, 200, result.data);
+        return respond(res, 201, result.data);
     }
 
     return respond(res, 500, result.errors);
@@ -53,7 +53,7 @@ export const login: ActionMethod = async (req, res) => {
 
     const expiresIn = 60 * 15; // 15 mins
     const expiry = new Date(Date.now() + expiresIn);
-    const token = jwt.sign(session, config.jwtSecret, { expiresIn });
+    const token = jwt.sign(session, config.jwt.secret, { expiresIn });
     const response = { token, expiry };
 
     if (session.success) {

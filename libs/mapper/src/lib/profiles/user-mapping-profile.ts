@@ -12,15 +12,14 @@ import cryptoUtils from '@to-do/utilities/crypto-utils';
 
 createMetadataMap<UserCreateType>('UserCreateType', {
     emailAddress: String,
-    emailAddressConfirmed: Boolean,
     password: String,
+    passwordConfirmed: String,
     username: String,
 });
 
 createMetadataMap<UserDetailType>('UserDetailType', {
     createdOn: Date,
     emailAddress: String,
-    emailAddressConfirmed: Boolean,
     id: Number,
     passwordHash: String,
     updatedOn: Date,

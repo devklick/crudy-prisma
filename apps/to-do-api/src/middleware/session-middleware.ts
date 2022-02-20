@@ -3,6 +3,7 @@ import config from '../config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { userSessionDetailSchema } from '@to-do/api-schemas/user-session-schema';
 import userSessionService from '@to-do/services/user-session-service';
+import { IncomingHttpHeaders } from 'http';
 
 const BEARER_PREFIX = 'Bearer ';
 
@@ -20,15 +21,11 @@ const middleware = async (
     res: express.Response,
     next: express.NextFunction
 ) => {
-    let accessToken =
-        req.headers['x-access-token'] || req.headers['authorization'];
-    if (!accessToken || typeof accessToken !== 'string') {
+    const accessToken = getToken(req.headers);
+    if (!accessToken) {
         return res.status(401).send('Not authenticated');
     }
-    if (accessToken.startsWith(BEARER_PREFIX)) {
-        accessToken = accessToken.substring(BEARER_PREFIX.length);
-    }
-    const decoded = verifyToken(accessToken, config.jwtSecret);
+    const decoded = verifyToken(accessToken, config.jwt.secret);
     if (!decoded) {
         return res.status(401).send('Invalid token');
     }
@@ -49,6 +46,17 @@ const middleware = async (
     req.session = sessions.data[0];
 
     return next();
+};
+
+const getToken = (headers: IncomingHttpHeaders): string | null => {
+    let accessToken = headers['x-access-token'] || headers['authorization'];
+    if (!accessToken || typeof accessToken !== 'string') {
+        return null;
+    }
+    if (accessToken.startsWith(BEARER_PREFIX)) {
+        accessToken = accessToken.substring(BEARER_PREFIX.length);
+    }
+    return accessToken;
 };
 
 /**

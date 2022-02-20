@@ -17,6 +17,7 @@
         "strict": true,
         "strictNullChecks": true,
         "typeRoots": ["@types", "./node_modules/@types"],
+        "noPropertyAccessFromIndexSignature": false,
         "paths": {
             "@to-do/api-schemas/common": [
                 "libs/api-schemas/common/src/index.ts"
@@ -26,6 +27,9 @@
             ],
             "@to-do/api-schemas/user-schema": [
                 "libs/api-schemas/user-schema/src/index.ts"
+            ],
+            "@to-do/api-schemas/user-schema-extended": [
+                "libs/api-schemas/user-schema-extended/src/index.ts"
             ],
             "@to-do/api-schemas/user-session-schema": [
                 "libs/api-schemas/user-session-schema/src/index.ts"
@@ -43,8 +47,14 @@
             "@to-do/services/to-do-service": [
                 "libs/services/to-do-service/src/index.ts"
             ],
+            "@to-do/services/to-do-service-fe": [
+                "libs/services/to-do-service-fe/src/index.ts"
+            ],
             "@to-do/services/user-service": [
                 "libs/services/user-service/src/index.ts"
+            ],
+            "@to-do/services/user-service-fe": [
+                "libs/services/user-service-fe/src/index.ts"
             ],
             "@to-do/services/user-session-service": [
                 "libs/services/user-session-service/src/index.ts"

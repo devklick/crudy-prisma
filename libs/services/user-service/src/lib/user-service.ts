@@ -65,9 +65,6 @@ export const findUsers: Find<UserDetailType> = async (
     if (query.emailAddress !== undefined) {
         filters.push({ email_address: query.emailAddress });
     }
-    if (query.emailAddressConfirmed !== undefined) {
-        filters.push({ email_address_confirmed: query.emailAddressConfirmed });
-    }
     if (query.id !== undefined) {
         filters.push({ id: query.id });
     }

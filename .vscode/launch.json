@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Debug API",
+            "type": "pwa-node",
+            "request": "attach",
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**",
+                "${workspaceFolder}/node_modules/**"
+            ],
+            
+        }
+    ]
+}

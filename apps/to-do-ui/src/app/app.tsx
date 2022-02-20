@@ -1,26 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { Container } from '@mui/material';
+import { Route, Routes } from 'react-router-dom';
+import Home from '../pages/home/home';
+import Login from '../pages/login'
+import SignUp from '../pages/sign-up';
 
 export const App = () => {
-  const [m, setMessage] = useState<string>('');
-
-  useEffect(() => {
-    fetch('/api')
-      .then((r) => r.json())
-      .then(setMessage);
-  }, []);
-
   return (
-    <>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Welcome to to-do-ui!</h1>
-        <img
-          width="450"
-          src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-          alt="Nx - Smart, Fast and Extensible Build System"
-        />
-      </div>
-      <div>{m}</div>
-    </>
+      <Container component="main" maxWidth="xs">
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/login' element={<Login />} />
+          <Route path='/sign-up' element={<SignUp />} />
+        </Routes>
+      </Container>
   );
 };
 

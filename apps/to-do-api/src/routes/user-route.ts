@@ -5,11 +5,8 @@ import validationMiddleware, {
     setDataSource,
 } from '../middleware/validation-middleware';
 import controller from '../controllers/user-controller';
-import {
-    userCreateSchema,
-    userGetSchema,
-    userLoginSchema,
-} from '@to-do/api-schemas/user-schema';
+import { userGetSchema, userLoginSchema } from '@to-do/api-schemas/user-schema';
+import { userCreateSchemaDBValidation } from '@to-do/api-schemas/user-schema-extended';
 
 export default Router()
     /**
@@ -35,7 +32,7 @@ export default Router()
     .post(
         '/',
         validationMiddleware(
-            userCreateSchema,
+            userCreateSchemaDBValidation,
             setDataSource(HttpDataSource.Body)
         ),
         controller.createUser

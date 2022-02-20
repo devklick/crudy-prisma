@@ -1,0 +1,25 @@
+{
+    "root": "libs/api-schemas/user-schema-extended",
+    "sourceRoot": "libs/api-schemas/user-schema-extended/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": [
+                    "libs/api-schemas/user-schema-extended/**/*.ts"
+                ]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/api-schemas/user-schema-extended"],
+            "options": {
+                "jestConfig": "libs/api-schemas/user-schema-extended/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}
