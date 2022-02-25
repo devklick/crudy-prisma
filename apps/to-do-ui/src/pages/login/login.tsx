@@ -3,14 +3,26 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { userLoginSchema, UserLoginType } from '@to-do/api-schemas/user-schema';
 import { Box, Button, TextField, Grid, Link, Typography } from '@mui/material';
 import userService from '@to-do/services/user-service-fe';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {authState } from '../../state/auth-state';
+import { sessionState } from '../../state/session-state';
+import { useContext, useEffect } from 'react';
+import { AppContext } from '../../context/session-context';
 
 /* eslint-disable-next-line */
 export interface LoginPageProps { }
 
-const onSubmit = async (loginRequest: UserLoginType) => {
-  const result = await userService.login(loginRequest);
-};
 const LoginPage = (props: LoginPageProps) => {
+  const navigate = useNavigate();
+  const {auth, session, login } = useContext(AppContext);
+  
+  const onSubmit = async (loginRequest: UserLoginType) => {
+    login(loginRequest);
+    navigate('/list'); 
+  };
+
   const {
     control,
     handleSubmit,

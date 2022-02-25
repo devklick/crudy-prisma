@@ -1,6 +1,7 @@
 import { Container } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import Home from '../pages/home/home';
+import List from '../pages/list/list';
 import Login from '../pages/login'
 import SignUp from '../pages/sign-up';
 
@@ -11,6 +12,7 @@ export const App = () => {
           <Route path='/' element={<Home/>}/>
           <Route path='/login' element={<Login />} />
           <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/list' element={<List />} />
         </Routes>
       </Container>
   );

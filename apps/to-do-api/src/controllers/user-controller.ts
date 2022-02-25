@@ -51,7 +51,7 @@ export const login: ActionMethod = async (req, res) => {
         userId: user.data.id,
     });
 
-    const expiresIn = 60 * 15; // 15 mins
+    const expiresIn = 60 * 15 * 1000; // 15 mins
     const expiry = new Date(Date.now() + expiresIn);
     const token = jwt.sign(session, config.jwt.secret, { expiresIn });
     const response = { token, expiry };

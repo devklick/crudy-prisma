@@ -5,16 +5,23 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import App from './app/app';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { RecoilRoot } from 'recoil';
+import { AppContextProvider } from './context/session-context';
+
 const theme = createTheme();
 
 ReactDOM.render(
-  <BrowserRouter>
-    <StrictMode>
-      <ThemeProvider theme={theme}>
-        <CssBaseline/>
-        <App />
-      </ThemeProvider>
-    </StrictMode>
-  </BrowserRouter>,
+  <RecoilRoot>
+    <BrowserRouter>
+      <StrictMode>
+        <ThemeProvider theme={theme}>
+          <CssBaseline/>
+          <AppContextProvider>
+            <App />
+          </AppContextProvider>
+        </ThemeProvider>
+      </StrictMode>
+    </BrowserRouter>
+  </RecoilRoot>,
   document.getElementById('root')
 );

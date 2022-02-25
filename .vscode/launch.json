@@ -10,6 +10,13 @@
                 "${workspaceFolder}/node_modules/**"
             ],
             
+        },
+        {
+            "name": "Debug UI",
+            "port": 4200,
+            "request": "attach",
+            "type": "pwa-chrome",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }

@@ -53,6 +53,10 @@ export const userLoginSchema = z.object({
 export const userLoginResultSchema = z.object({
     token: z.string(),
     expiry: z.date(),
+    session: userSessionDetailSchema,
+});
+export const userLogoutSchema = z.object({
+    session: userSessionDetailSchema,
 });
 export const userCreateResultSchema = z.object({});
 
@@ -61,4 +65,5 @@ export type UserDetailType = z.infer<typeof userDetailSchema>;
 export type UserGetType = z.infer<typeof userGetSchema>;
 export type UserLoginType = z.infer<typeof userLoginSchema>;
 export type UserLoginResultType = z.infer<typeof userLoginResultSchema>;
+export type UserLogoutType = z.infer<typeof userLogoutSchema>;
 export type UserCreateResultType = z.infer<typeof userCreateResultSchema>;
