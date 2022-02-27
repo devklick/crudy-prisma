@@ -20,7 +20,7 @@ export type AppContextType = {
     assumeLoggedIn: () => boolean;
     login:(loginRequest: UserLoginType) => Promise<boolean>;
     logout: () => Promise<void>;
-    loading: boolean;
+    loadingStoredAuth: boolean;
 };
 const defaultContextValue: AppContextType = {
     auth: null,
@@ -28,7 +28,7 @@ const defaultContextValue: AppContextType = {
     assumeLoggedIn: () => false,
     login: () => Promise.resolve(false),
     logout: () => Promise.resolve(),
-    loading: true
+    loadingStoredAuth: true
 };
 
 export const AppContext = createContext<AppContextType>(defaultContextValue);
@@ -54,7 +54,7 @@ const setLocalData = <T,> (type: StoredDataType, value: T) => {
 export const AppContextProvider = ({children }: AppContextProviderProps) => {
     const [auth, setAuth] = useState<AuthType|null>(null);
     const [session, setSession] = useState<SessionType|null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loadingStoredAuth, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getLocalData(StoredDataType.Auth, setAuth);
@@ -98,7 +98,7 @@ export const AppContextProvider = ({children }: AppContextProviderProps) => {
     const logout = () => Promise.resolve();
 
     return (
-        <AppContext.Provider value={{auth, session, login, assumeLoggedIn, logout, loading}}>
+        <AppContext.Provider value={{auth, session, login, assumeLoggedIn, logout, loadingStoredAuth}}>
             {children}
         </AppContext.Provider>
     );

@@ -9,7 +9,8 @@ const updatedOn = zDate().optional().nullable();
 const title = z.string().nonempty().max(64);
 const description = z.string().max(256).optional().nullable();
 const deadline = zDate().optional().nullable();
-const status = z.nativeEnum(StatusIds);
+// const status = z.nativeEnum(StatusIds);
+const status = z.string();
 const createdById = z.number().int();
 const assignedToId = z.number().int();
 const session = userSessionDetailSchema;
@@ -57,14 +58,7 @@ export const todoUpdateSchema = z
         createdById,
         assignedToId,
     })
-    .partial({
-        title: true,
-        description: true,
-        deadline: true,
-        status: true,
-        createdById: true,
-        assignedToId: true,
-    });
+    .partial();
 
 export type TodoGetType = z.infer<typeof todoGetSchema>;
 export type TodoCreateType = z.infer<typeof todoCreateSchema>;

@@ -1,6 +1,5 @@
 import { Container } from '@mui/material';
-import { Route, Routes} from 'react-router-dom';
-import Home from '../pages/home/home';
+import { Navigate, Route, Routes} from 'react-router-dom';
 import List from '../pages/list/list';
 import Login from '../pages/login'
 import SignUp from '../pages/sign-up';
@@ -9,10 +8,10 @@ export const App = () => {
   return (
       <Container component="main" maxWidth="xs">
         <Routes>
-          <Route path='/' element={<Home/>}/>
           <Route path='/login' element={<Login />} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/list' element={<List />} />
+          <Route path='*' element={<Navigate to='/list'/>}/>
         </Routes>
       </Container>
   );

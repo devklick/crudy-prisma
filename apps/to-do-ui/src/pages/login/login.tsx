@@ -1,14 +1,9 @@
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userLoginSchema, UserLoginType } from '@to-do/api-schemas/user-schema';
-import { Box, Button, TextField, Grid, Link, Typography } from '@mui/material';
-import userService from '@to-do/services/user-service-fe';
+import { Box, Button, TextField, Grid, Link, Typography, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {authState } from '../../state/auth-state';
-import { sessionState } from '../../state/session-state';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/session-context';
 
 /* eslint-disable-next-line */
@@ -16,11 +11,22 @@ export interface LoginPageProps { }
 
 const LoginPage = (props: LoginPageProps) => {
   const navigate = useNavigate();
-  const {auth, session, login } = useContext(AppContext);
-  
+  const {login, assumeLoggedIn, loadingStoredAuth } = useContext(AppContext);
+  const [displayFailedAuth, setDisplayFailedAuth] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!loadingStoredAuth && assumeLoggedIn()) {
+      navigate('/list');
+    }
+  }, [assumeLoggedIn, loadingStoredAuth, navigate]);
+
   const onSubmit = async (loginRequest: UserLoginType) => {
-    login(loginRequest);
-    navigate('/list'); 
+    const success = await login(loginRequest);
+    console.log('Login success is', success);
+    setDisplayFailedAuth(!success);
+    if (success) {
+      navigate('/list'); 
+    }
   };
 
   const {
@@ -81,6 +87,7 @@ const LoginPage = (props: LoginPageProps) => {
                 />
               )}
             />
+            { displayFailedAuth && <Alert severity="error" onClose={() => setDisplayFailedAuth(false)}>Login failed</Alert>}
             <Button
               type="submit"
               fullWidth  

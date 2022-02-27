@@ -9,7 +9,7 @@ export interface ListProps { };
 
 const List = () => {
 
-    const { assumeLoggedIn, auth, session, loading } = useContext(AppContext);
+    const { assumeLoggedIn, auth, session, loadingStoredAuth } = useContext(AppContext);
     const loggedIn = assumeLoggedIn();
     const navigate= useNavigate();
     
@@ -17,18 +17,18 @@ const List = () => {
     // there's nothing to suggest that the user is authenticated, 
     // redirect them to the login page to authenticate
     useEffect(() => {
-        if (!loggedIn && !loading) {
+        if (!loggedIn && !loadingStoredAuth) {
             navigate('/login');
         }
-    }, [loggedIn, navigate, loading])
+    }, [loggedIn, navigate, loadingStoredAuth])
 
     return (
-            <MuiList sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <MuiList sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
                 <TodoListItem 
                     assignedToId={1}
                     assignedToName='Me'
                     deadline={new Date()}
-                    status='On Track'
+                    statusId={1}
                     title="First Thing"
                 />
                 
@@ -36,7 +36,7 @@ const List = () => {
                     assignedToId={2}
                     assignedToName='You'
                     deadline={new Date()}
-                    status='Delayed'
+                    statusId={2}
                     title="Do smething else"
                 />
             </MuiList>
