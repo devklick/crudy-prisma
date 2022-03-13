@@ -47,6 +47,7 @@ const SignUp = (props: SignUpProps) => {
                       label='Username'
                       type='text'
                       fullWidth
+                      margin='dense'
                       variant="outlined"
                       autoComplete="username"
                       autoFocus
@@ -66,6 +67,7 @@ const SignUp = (props: SignUpProps) => {
                       type='email'
                       fullWidth
                       variant="outlined"
+                      margin='dense'
                       autoComplete="email"
                       error={Boolean(errors.emailAddress)}
                       helperText={errors.emailAddress?.message}
@@ -83,6 +85,7 @@ const SignUp = (props: SignUpProps) => {
                       type='password'
                       fullWidth
                       variant="outlined"
+                      margin='dense'
                       autoComplete="password"
                       error={Boolean(errors.password)}
                       helperText={errors.password?.message}
@@ -99,6 +102,7 @@ const SignUp = (props: SignUpProps) => {
                       label='Confirm Password'
                       type='password'
                       fullWidth
+                      margin='dense'
                       variant="outlined"
                       error={Boolean(errors.passwordConfirmed)}
                       helperText={errors.passwordConfirmed?.message}

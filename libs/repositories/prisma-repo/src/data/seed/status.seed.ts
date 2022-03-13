@@ -1,7 +1,6 @@
 import { client } from '../../client';
 
 // TODO: Consider maing this a DB enum using prisma
-
 export enum StatusIds {
     ToDo = 0,
     InProgress = 1,

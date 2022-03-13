@@ -60,6 +60,7 @@ const LoginPage = (props: LoginPageProps) => {
                   label='Email or Username'
                   type='text'
                   fullWidth
+                  margin='dense'
                   variant="outlined"
                   autoComplete="email"
                   autoFocus
@@ -78,6 +79,7 @@ const LoginPage = (props: LoginPageProps) => {
                   label='Password'
                   type='password'
                   fullWidth
+                  margin='dense'
                   variant="outlined"
                   autoComplete="current-password"
                   error={Boolean(errors.password)}

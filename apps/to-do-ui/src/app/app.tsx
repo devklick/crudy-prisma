@@ -6,7 +6,7 @@ import SignUp from '../pages/sign-up';
 
 export const App = () => {
   return (
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/sign-up' element={<SignUp />} />

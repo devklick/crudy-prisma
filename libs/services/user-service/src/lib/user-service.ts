@@ -78,11 +78,14 @@ export const findUsers: Find<UserDetailType> = async (
         filters.push({ username: query.username });
     }
 
-    const entities = await client.user.findMany({
-        where: {
-            OR: filters,
-        },
-    });
+    const entities =
+        filters.length === 0
+            ? await client.user.findMany()
+            : await client.user.findMany({
+                  where: {
+                      OR: filters,
+                  },
+              });
 
     const models: UserDetailType[] = await Promise.all(
         entities.map(

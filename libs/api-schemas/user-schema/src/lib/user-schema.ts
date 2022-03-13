@@ -45,6 +45,9 @@ export const userGetSchema = z.object({
     id: zRouteNumericId(),
     session: userSessionDetailSchema,
 });
+export const usersFindSchema = userDetailSchema.partial().extend({
+    session: userSessionDetailSchema,
+});
 
 export const userLoginSchema = z.object({
     password: z.string(),
@@ -63,6 +66,7 @@ export const userCreateResultSchema = z.object({});
 export type UserCreateType = z.infer<typeof userCreateSchema>;
 export type UserDetailType = z.infer<typeof userDetailSchema>;
 export type UserGetType = z.infer<typeof userGetSchema>;
+export type UsersFindType = z.infer<typeof usersFindSchema>;
 export type UserLoginType = z.infer<typeof userLoginSchema>;
 export type UserLoginResultType = z.infer<typeof userLoginResultSchema>;
 export type UserLogoutType = z.infer<typeof userLogoutSchema>;

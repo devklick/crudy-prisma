@@ -1,9 +1,15 @@
 import { createMetadataMap } from '@automapper/pojos';
-import { TodoCreateType, TodoDetailType } from '@to-do/api-schemas/todo-schema';
+import {
+    TodoCreateType,
+    TodoDetailType,
+    TodoFindType,
+    TodoStatusDetailType,
+    TodoStatusFindType,
+} from '@to-do/api-schemas/todo-schema';
 import { StatusIds } from '@to-do/repositories/prisma-repo';
 
 import { mapFrom, MappingProfile } from '@automapper/core';
-import { to_do } from '@prisma/client';
+import { status, to_do } from '@prisma/client';
 import { apiToDbNamingConvention, dbToApiNamingConvention } from '../defaults';
 
 createMetadataMap<TodoCreateType>('TodoCreateType', {
@@ -26,6 +32,29 @@ createMetadataMap<TodoDetailType>('TodoDetailType', {
     updatedOn: Date,
 });
 
+createMetadataMap<TodoFindType>('TodoFindType', {
+    assignedToId: Number,
+    createdById: Number,
+    createdOn: Date,
+    deadline: String,
+    description: String,
+    id: Number,
+    status: typeof StatusIds,
+    title: String,
+    updatedOn: Date,
+});
+
+createMetadataMap<TodoStatusFindType>('TodoStatusFindType', {
+    id: Number,
+    description: String,
+    name: String,
+});
+createMetadataMap<TodoStatusDetailType>('TodoStatusDetailType', {
+    id: Number,
+    description: String,
+    name: String,
+});
+
 createMetadataMap<to_do>('to_do', {
     title: String,
     assigned_to_id: Number,
@@ -36,6 +65,12 @@ createMetadataMap<to_do>('to_do', {
     created_on: Date,
     updated_on: Date,
     status_id: Number,
+});
+
+createMetadataMap<status>('status', {
+    id: Number,
+    description: String,
+    name: String,
 });
 
 const todoMappingProfile: MappingProfile = (mapper) => {
@@ -64,6 +99,30 @@ const todoMappingProfile: MappingProfile = (mapper) => {
             (dest) => dest.status,
             mapFrom((source) => source.status_id)
         );
+
+    mapper
+        .createMap<TodoFindType, to_do>('TodoFindType', 'to_do', {
+            namingConventions: apiToDbNamingConvention,
+        })
+        .forMember(
+            (dest) => dest.status_id,
+            mapFrom((source) => source.status as number)
+        );
+
+    mapper.createMap<TodoStatusFindType, status>(
+        'TodoStatusFindType',
+        'status',
+        {
+            namingConventions: apiToDbNamingConvention,
+        }
+    );
+    mapper.createMap<status, TodoStatusDetailType>(
+        'status',
+        'TodoStatusDetailType',
+        {
+            namingConventions: apiToDbNamingConvention,
+        }
+    );
 };
 
 export default todoMappingProfile;

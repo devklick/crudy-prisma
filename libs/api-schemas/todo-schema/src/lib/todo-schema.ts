@@ -1,7 +1,14 @@
 import { z } from 'zod';
-import { StatusIds } from '@to-do/repositories/prisma-repo';
 import { zDate, zRouteNumericId } from '@to-do/api-schemas/common';
 import { userSessionDetailSchema } from '@to-do/api-schemas/user-session-schema';
+
+export enum StatusIds {
+    ToDo = 0,
+    InProgress = 1,
+    Complete = 2,
+    Parked = 3,
+    Abandoned = 4,
+}
 
 const id = z.number().int();
 const createdOn = zDate();
@@ -9,8 +16,7 @@ const updatedOn = zDate().optional().nullable();
 const title = z.string().nonempty().max(64);
 const description = z.string().max(256).optional().nullable();
 const deadline = zDate().optional().nullable();
-// const status = z.nativeEnum(StatusIds);
-const status = z.string();
+const status = z.nativeEnum(StatusIds);
 const createdById = z.number().int();
 const assignedToId = z.number().int();
 const session = userSessionDetailSchema;
@@ -48,6 +54,8 @@ export const todoGetSchema = z.object({
     userSession: session,
 });
 
+export const todoFindSchema = todoDetailSchema.partial();
+
 export const todoUpdateSchema = z
     .object({
         id,
@@ -60,7 +68,18 @@ export const todoUpdateSchema = z
     })
     .partial();
 
+export const todoStatusDetailSchema = z.object({
+    id: z.number().int(),
+    name: z.string(),
+    description: z.string(),
+});
+
+export const todoStatusFindSchema = todoStatusDetailSchema.partial();
+
 export type TodoGetType = z.infer<typeof todoGetSchema>;
+export type TodoFindType = z.infer<typeof todoFindSchema>;
 export type TodoCreateType = z.infer<typeof todoCreateSchema>;
 export type TodoUpdateType = z.infer<typeof todoUpdateSchema>;
 export type TodoDetailType = z.infer<typeof todoDetailSchema>;
+export type TodoStatusFindType = z.infer<typeof todoStatusFindSchema>;
+export type TodoStatusDetailType = z.infer<typeof todoStatusDetailSchema>;

@@ -21,6 +21,16 @@ export const getUser: ActionMethod = async (req, res) => {
     return respond(res, 404, result.errors);
 };
 
+export const findUsers: ActionMethod = async (req, res) => {
+    const result = await userService.findUsers(req.query);
+
+    if (result.success) {
+        return respond(res, 200, result.data);
+    }
+
+    return respond(res, 500, result.errors);
+};
+
 export const createUser: ActionMethod = async (req, res) => {
     const result = await userService.createUser(
         req.validatedData as UserCreateType
@@ -65,6 +75,7 @@ export const login: ActionMethod = async (req, res) => {
 
 export default {
     getUser,
+    findUsers,
     createUser,
     login,
 };

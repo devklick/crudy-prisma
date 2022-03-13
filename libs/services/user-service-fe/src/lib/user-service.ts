@@ -1,6 +1,7 @@
 import {
     UserCreateResultType,
     UserCreateType,
+    UserDetailType,
     UserLoginResultType,
     UserLoginType,
 } from '@to-do/api-schemas/user-schema';
@@ -38,7 +39,19 @@ export const signUp = async (
     throw new Error('Figure out what to do with this!');
 };
 
+export const getUsers = async (token: string): Promise<UserDetailType[]> => {
+    const result = await userApi.request<UserDetailType[]>({
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    if (result.status === StatusCode.SuccessOK) {
+        return result.data;
+    }
+    throw new Error('Figure out what to do with this!');
+};
+
 export default {
     login,
     signUp,
+    getUsers,
 };

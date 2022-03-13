@@ -5,10 +5,25 @@ import validationMiddleware, {
     setDataSource,
 } from '../middleware/validation-middleware';
 import controller from '../controllers/user-controller';
-import { userGetSchema, userLoginSchema } from '@to-do/api-schemas/user-schema';
+import {
+    userGetSchema,
+    userLoginSchema,
+    usersFindSchema,
+} from '@to-do/api-schemas/user-schema';
 import { userCreateSchemaDBValidation } from '@to-do/api-schemas/user-schema-extended';
 
 export default Router()
+    .get(
+        '/',
+        sessionMiddleware,
+        validationMiddleware(
+            usersFindSchema,
+            setDataSource(HttpDataSource.Params),
+            setDataSource(HttpDataSource.Session, false)
+        ),
+        controller.findUsers
+    )
+
     /**
      * GET user/:id
      * Used to fetch an existing user by it's internal ID.
