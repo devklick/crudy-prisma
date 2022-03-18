@@ -66,7 +66,14 @@ export const todoUpdateSchema = z
         createdById,
         assignedToId,
     })
-    .partial();
+    .partial({
+        title: true,
+        description: true,
+        deadline: true,
+        status: true,
+        createdById: true,
+        assignedToId: true,
+    });
 
 export const todoStatusDetailSchema = z.object({
     id: z.number().int(),

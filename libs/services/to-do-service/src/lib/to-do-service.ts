@@ -5,6 +5,7 @@ import {
     TodoFindType,
     TodoStatusDetailType,
     TodoStatusFindType,
+    TodoUpdateType,
 } from '@to-do/api-schemas/todo-schema';
 import {
     Create,
@@ -13,6 +14,7 @@ import {
     Get,
     Result,
     success,
+    Update,
 } from '@to-do/service-framework/service';
 import mapper from '@to-do/mapper';
 import { client } from '@to-do/repositories/prisma-repo';
@@ -122,6 +124,29 @@ export const findTodos: Find<TodoDetailType> = async (
     return success(models);
 };
 
+export const updateTodo: Update<TodoUpdateType, TodoDetailType> = async (
+    item: TodoUpdateType
+) => {
+    const entity = await client.to_do.update({
+        where: { id: item.id },
+        data: {
+            deadline: item.deadline,
+            title: item.title,
+            description: item.description,
+            assigned_to_id: item.assignedToId,
+            status_id: item.status,
+        },
+    });
+
+    const model = await mapper.mapAsync<to_do, TodoDetailType>(
+        entity,
+        'TodoDetailType',
+        'to_do'
+    );
+
+    return success(model);
+};
+
 export const findTodoStatuses: Find<TodoStatusDetailType> = async (
     query: TodoStatusFindType
 ) => {
@@ -142,7 +167,7 @@ export const findTodoStatuses: Find<TodoStatusDetailType> = async (
 
 export default {
     createTodo,
-    // updateTodo,
+    updateTodo,
     getTodo,
     findTodos,
     findTodoStatuses,

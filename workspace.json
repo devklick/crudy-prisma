@@ -17,7 +17,6 @@
         "services-user-session-service": "libs/services/user-session-service",
         "to-do-api": "apps/to-do-api",
         "to-do-ui": "apps/to-do-ui",
-        "to-do-ui-e2e": "apps/to-do-ui-e2e",
         "utilities-crypto-utils": "libs/utilities/crypto-utils",
         "utilities-environment-utils": "libs/utilities/environment-utils",
         "validators-to-do-validator": "libs/validators/to-do-validator",

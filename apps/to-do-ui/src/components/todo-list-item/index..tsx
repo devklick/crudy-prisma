@@ -24,9 +24,11 @@ import {
   todoUpdateSchema,
   TodoUpdateType,
 } from '@to-do/api-schemas/todo-schema';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { UserDetailType } from '@to-do/api-schemas/user-schema';
+import todoService from '@to-do/services/to-do-service-fe';
+import { AppContext } from '../../context/session-context';
 
 const stopProp = (e: React.MouseEvent<HTMLElement, MouseEvent> | undefined) =>
   e?.stopPropagation();
@@ -88,6 +90,7 @@ export const getStatusSelectList = (
 };
 
 const TodoListItem = (props: TodoListItemProps) => {
+  const { auth } = useContext(AppContext);
   const [status, setStatus] = useState<number>(props.data.status);
   const [assignedTo, setAssignedTo] = useState<number>(props.data.assignedToId);
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -120,25 +123,38 @@ const TodoListItem = (props: TodoListItemProps) => {
     // Call API to perform status update
   }, [assignedTo]);
 
-  const handleStatusChange = (event: SelectChangeEvent<number>) => {
+  const handleStatusChange = async (event: SelectChangeEvent<number>) => {
     const newStatus = event.target.value as number;
     if (newStatus !== status) {
-      setStatus(newStatus);
+      const apiResult = await todoService.updateTodo(auth?.authToken ?? '', {
+        ...data,
+        status: newStatus,
+      });
+      setData(apiResult);
+      setStatus(apiResult.status);
     }
   };
-  const handleAssignedToChange = (event: SelectChangeEvent<number>) => {
+  const handleAssignedToChange = async (event: SelectChangeEvent<number>) => {
     console.log('Handling assigned to change');
     const newUser = event.target.value as number;
     if (newUser !== assignedTo) {
-      setAssignedTo(newUser);
+      const apiResult = await todoService.updateTodo(auth?.authToken ?? '', {
+        ...data,
+        assignedToId: newUser,
+      });
+      setData(apiResult);
+      setAssignedTo(apiResult.assignedToId);
     }
   };
 
   const onSubmit = async (todoUpdate: TodoUpdateType) => {
     setEditMode(false);
     console.log('Submitting changes...');
-    // TODO: Update via API
-    setData(todoUpdate);
+    const apiResult = await todoService.updateTodo(
+      auth?.authToken ?? '',
+      todoUpdate
+    );
+    setData(apiResult);
   };
 
   return (
@@ -207,7 +223,9 @@ const TodoListItem = (props: TodoListItemProps) => {
                   )}
                 />
               ) : (
-                <Typography>{data.description} </Typography>
+                <Typography variant='body1' style={{ whiteSpace: 'pre-line' }}>
+                  {data.description}
+                </Typography>
               )}
               {expanded && !editMode && (
                 <Box textAlign='right' sx={{ paddingBottom: 2 }}>

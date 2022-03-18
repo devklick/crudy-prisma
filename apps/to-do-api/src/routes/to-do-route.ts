@@ -10,6 +10,7 @@ import {
     todoFindSchema,
     todoGetSchema,
     todoStatusFindSchema,
+    todoUpdateSchema,
 } from '@to-do/api-schemas/todo-schema';
 
 export default Router()
@@ -46,6 +47,20 @@ export default Router()
             setDataSource(HttpDataSource.Session, false)
         ),
         controller.createToDo
+    )
+
+    /**
+     * PUT /todo
+     * Updates an existing todo item.
+     */
+    .put(
+        '/',
+        validationMiddleware(
+            todoUpdateSchema,
+            setDataSource(HttpDataSource.Body),
+            setDataSource(HttpDataSource.Session, false)
+        ),
+        controller.updateTodo
     )
 
     .get(

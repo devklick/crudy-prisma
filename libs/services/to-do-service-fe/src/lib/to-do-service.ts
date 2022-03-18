@@ -1,6 +1,7 @@
 import {
     TodoDetailType,
     TodoStatusDetailType,
+    TodoUpdateType,
 } from '@to-do/api-schemas/todo-schema';
 import axios from 'axios';
 import StatusCode from 'status-code-enum';
@@ -34,7 +35,23 @@ export const getStatuses = async (
     throw new Error('Figure out what to do with this!');
 };
 
+export const updateTodo = async (
+    token: string,
+    data: TodoUpdateType
+): Promise<TodoDetailType> => {
+    const result = await todoApi.request<TodoDetailType>({
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}` },
+        data,
+    });
+    if (result.status === StatusCode.SuccessOK) {
+        return result.data;
+    }
+    throw new Error('Figure out what to do with this!');
+};
+
 export default {
     getTodoList,
     getStatuses,
+    updateTodo,
 };
