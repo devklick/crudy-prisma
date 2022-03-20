@@ -8,7 +8,7 @@ export type ActionMethod = (
 export const respond = <T>(
     response: Response,
     status: number,
-    payload: T
+    payload?: T
 ): void => {
     response.status(status).send(payload);
 };

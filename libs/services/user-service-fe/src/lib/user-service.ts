@@ -26,6 +26,18 @@ export const login = async (
     throw new Error('Figure out what to do with this!');
 };
 
+export const logout = async (token: string): Promise<void> => {
+    const result = await userApi.request({
+        method: 'POST',
+        url: 'logout',
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    if (result.status === StatusCode.SuccessOK) {
+        return;
+    }
+    throw new Error('Figure out what to do with this!');
+};
+
 export const signUp = async (
     signUpRequest: UserCreateType
 ): Promise<UserCreateResultType> => {
@@ -54,4 +66,5 @@ export default {
     login,
     signUp,
     getUsers,
+    logout,
 };

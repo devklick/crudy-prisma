@@ -8,6 +8,7 @@ import controller from '../controllers/user-controller';
 import {
     userGetSchema,
     userLoginSchema,
+    userLogoutSchema,
     usersFindSchema,
 } from '@to-do/api-schemas/user-schema';
 import { userCreateSchemaDBValidation } from '@to-do/api-schemas/user-schema-extended';
@@ -64,4 +65,18 @@ export default Router()
             setDataSource(HttpDataSource.Body)
         ),
         controller.login
+    )
+
+    /**
+     * POST /user/logout
+     * Used to log out of an existing user session
+     */
+    .post(
+        '/logout',
+        sessionMiddleware,
+        validationMiddleware(
+            userLogoutSchema,
+            setDataSource(HttpDataSource.Session, false)
+        ),
+        controller.logout
     );

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/app-context';
 import { List as MuiList } from '@mui/material';
-import TodoListItem from '../../components/todo-list-item/index.';
+import TodoListItem from '../../components/todo-list-item';
 import { useNavigate } from 'react-router-dom';
 import {
   TodoDetailType,
@@ -11,6 +11,7 @@ import todoService from '@to-do/services/to-do-service-fe';
 import { UserDetailType } from '@to-do/api-schemas/user-schema';
 import userService from '@to-do/services/user-service-fe';
 import CreateTodoListItem from '../../components/create-todo-item';
+import NavMenu from '../../components/nav-menu';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ListProps {}
@@ -64,16 +65,19 @@ const List = () => {
   }, [loggedIn, navigate, loadingStoredAuth]);
 
   return (
-    <MuiList sx={{ width: '100%', maxWidth: '100%' }}>
-      <CreateTodoListItem
-        todoCreated={handleTodoCreated}
-        users={users}
-        statuses={statuses}
-      />
-      {todos.map((item, i) => (
-        <TodoListItem key={i} data={item} users={users} statuses={statuses} />
-      ))}
-    </MuiList>
+    <>
+      <NavMenu />
+      <MuiList sx={{ width: '100%', maxWidth: '100%' }}>
+        <CreateTodoListItem
+          todoCreated={handleTodoCreated}
+          users={users}
+          statuses={statuses}
+        />
+        {todos.map((item, i) => (
+          <TodoListItem key={i} data={item} users={users} statuses={statuses} />
+        ))}
+      </MuiList>
+    </>
   );
 };
 export default List;

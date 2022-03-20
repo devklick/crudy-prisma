@@ -2,6 +2,7 @@ import {
     UserCreateType,
     UserGetType,
     UserLoginType,
+    UserLogoutType,
 } from '@to-do/api-schemas/user-schema';
 import { ActionMethod, respond } from '@to-do/service-framework/controller';
 import userService from '@to-do/services/user-service';
@@ -73,9 +74,15 @@ export const login: ActionMethod = async (req, res) => {
     return respond(res, 200, response);
 };
 
+export const logout: ActionMethod = async (req, res) => {
+    await userService.logout(req.validatedData as UserLogoutType);
+    return respond(res, 200);
+};
+
 export default {
     getUser,
     findUsers,
     createUser,
     login,
+    logout,
 };

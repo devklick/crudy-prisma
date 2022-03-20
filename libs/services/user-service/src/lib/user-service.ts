@@ -1,4 +1,9 @@
-import { UserCreateType, UserDetailType } from '@to-do/api-schemas/user-schema';
+import {
+    UserCreateType,
+    UserDetailType,
+    UserLoginType,
+    UserLogoutType,
+} from '@to-do/api-schemas/user-schema';
 import {
     Create,
     failed,
@@ -6,6 +11,7 @@ import {
     Get,
     Result,
     success,
+    Update,
 } from '@to-do/service-framework/service';
 import { client } from '@to-do/repositories/prisma-repo';
 import { Prisma, user } from '@prisma/client';
@@ -122,9 +128,18 @@ export const getAuthenticatedUser = async (
     return failed('Incorrect password');
 };
 
+export const logout: Update<UserLogoutType, void> = async (request) => {
+    await client.user_session.update({
+        where: { session_token: request.session.sessionToken },
+        data: { expires_on: new Date(), updated_on: new Date() },
+    });
+    return success();
+};
+
 export default {
     createUser,
     getUser,
     findUsers,
     getAuthenticatedUser,
+    logout,
 };

@@ -2,6 +2,7 @@ import { UserLoginType } from '@to-do/api-schemas/user-schema';
 import { UserSessionDetailType } from '@to-do/api-schemas/user-session-schema';
 import userService from '@to-do/services/user-service-fe';
 import React, { useState, useEffect, createContext } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 enum StoredDataType {
   Session = 'SESSION',
@@ -16,7 +17,7 @@ export type AppContextType = {
   session: UserSessionDetailType | null;
   assumeLoggedIn: () => boolean;
   login: (loginRequest: UserLoginType) => Promise<boolean>;
-  logout: () => Promise<void>;
+  logout: () => Promise<boolean>;
   loadingStoredAuth: boolean;
 };
 const defaultContextValue: AppContextType = {
@@ -24,7 +25,7 @@ const defaultContextValue: AppContextType = {
   session: null,
   assumeLoggedIn: () => false,
   login: () => Promise.resolve(false),
-  logout: () => Promise.resolve(),
+  logout: () => Promise.resolve(false),
   loadingStoredAuth: true,
 };
 
@@ -55,7 +56,7 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [auth, setAuth] = useState<AuthType | null>(null);
   const [session, setSession] = useState<UserSessionDetailType | null>(null);
   const [loadingStoredAuth, setLoading] = useState<boolean>(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     getLocalData(StoredDataType.Auth, setAuth);
     getLocalData(StoredDataType.Session, setSession);
@@ -86,22 +87,29 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
     return false;
   };
   const login = async (loginRequest: UserLoginType) => {
-    await userService
-      .login(loginRequest)
-      .then((result) => {
-        setAuth({ authToken: result.token, authExpiry: result.expiry });
-        setSession(result.session);
-        return true;
-      })
-      .catch((error) => {
-        console.log(error); // TODO: Do something more appropriate
-        return false;
-      });
-    return false;
+    try {
+      const result = await userService.login(loginRequest);
+      setAuth({ authToken: result.token, authExpiry: result.expiry });
+      setSession(result.session);
+      return true;
+    } catch (e) {
+      console.log(e); // TODO: Do something more appropriate
+      return false;
+    }
   };
 
-  // TODO: Implement this - needs API changes
-  const logout = () => Promise.resolve();
+  const logout = async () => {
+    try {
+      auth?.authToken && (await userService.logout(auth.authToken));
+      setAuth(null);
+      setSession(null);
+      navigate('/login');
+      return true;
+    } catch (e) {
+      console.log(e); // TODO: Do something more appropriate
+      return false;
+    }
+  };
 
   return (
     <AppContext.Provider
