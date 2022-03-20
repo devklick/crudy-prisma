@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../../context/session-context';
+import { AppContext } from '../../context/app-context';
 import { List as MuiList } from '@mui/material';
 import TodoListItem from '../../components/todo-list-item/index.';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import {
 import todoService from '@to-do/services/to-do-service-fe';
 import { UserDetailType } from '@to-do/api-schemas/user-schema';
 import userService from '@to-do/services/user-service-fe';
+import CreateTodoListItem from '../../components/create-todo-item';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ListProps {}
@@ -19,17 +20,16 @@ const List = () => {
   const loggedIn = assumeLoggedIn();
   const navigate = useNavigate();
 
-  const [items, setItems] = useState<TodoDetailType[]>([]);
+  const [todos, setTodos] = useState<TodoDetailType[]>([]);
   const [users, setUsers] = useState<UserDetailType[]>([]);
   const [statuses, setStatueses] = useState<TodoStatusDetailType[]>([]);
 
+  const getTodos = async (token: string) => {
+    setTodos(await todoService.getTodoList(token));
+  };
+
   useEffect(() => {
-    const getItems = async (token: string) => {
-      setItems(await todoService.getTodoList(token));
-    };
-    if (auth?.authToken) {
-      getItems(auth.authToken);
-    }
+    auth?.authToken && getTodos(auth?.authToken);
   }, [auth]);
 
   useEffect(() => {
@@ -50,6 +50,10 @@ const List = () => {
     }
   }, [auth]);
 
+  const handleTodoCreated = async () => {
+    auth?.authToken && getTodos(auth?.authToken);
+  };
+
   // If the context tells that the local data has been loaded and
   // there's nothing to suggest that the user is authenticated,
   // redirect them to the login page to authenticate
@@ -61,8 +65,13 @@ const List = () => {
 
   return (
     <MuiList sx={{ width: '100%', maxWidth: '100%' }}>
-      {items.map((item) => (
-        <TodoListItem data={item} users={users} statuses={statuses} />
+      <CreateTodoListItem
+        todoCreated={handleTodoCreated}
+        users={users}
+        statuses={statuses}
+      />
+      {todos.map((item, i) => (
+        <TodoListItem key={i} data={item} users={users} statuses={statuses} />
       ))}
     </MuiList>
   );

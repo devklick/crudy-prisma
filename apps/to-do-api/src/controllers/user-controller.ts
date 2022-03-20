@@ -60,17 +60,17 @@ export const login: ActionMethod = async (req, res) => {
     const session = await userSessionService.createUserSession({
         userId: user.data.id,
     });
+    if (!session.success) {
+        return respond(res, 401, 'An error occurred while logging in');
+    }
 
     // const expiresIn = 60 * 15 * 1000; // 15 mins
     const expiresIn = 60 * 15 * 1000 * 4 * 12; // 12 hours during dev. // TODO: Reset this to 15 mins
     const expiry = new Date(Date.now() + expiresIn);
     const token = jwt.sign(session, config.jwt.secret, { expiresIn });
-    const response = { token, expiry };
+    const response = { token, expiry, session: session.data };
 
-    if (session.success) {
-        return respond(res, 200, response);
-    }
-    return respond(res, 500, session.errors);
+    return respond(res, 200, response);
 };
 
 export default {

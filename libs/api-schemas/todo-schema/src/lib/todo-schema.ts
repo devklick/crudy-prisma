@@ -28,7 +28,7 @@ export const todoCreateSchema = z.object({
     status,
     // Only an authenticated user can create a todo item, so we expect a user session.
     // This is taken care of by the session-middleware.
-    session,
+    session: session.optional(),
 
     // This is optional when creating a todo item.
     // If it's not specified, the todo item will automatically be assigned to the authenticated user.
@@ -49,9 +49,6 @@ export const todoDetailSchema = z.object({
 
 export const todoGetSchema = z.object({
     id: zRouteNumericId(),
-    // Only an authenticated user can create a todo item, so we expect a user session.
-    // This is taken care of by the session-middleware.
-    userSession: session,
 });
 
 export const todoFindSchema = todoDetailSchema.partial();

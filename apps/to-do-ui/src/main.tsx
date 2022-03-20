@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import App from './app/app';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { RecoilRoot } from 'recoil';
-import { AppContextProvider } from './context/session-context';
+import { AppContextProvider } from './context/app-context';
 
 const theme = createTheme();
 
@@ -15,7 +15,7 @@ ReactDOM.render(
     <BrowserRouter>
       <StrictMode>
         <ThemeProvider theme={theme}>
-          <CssBaseline/>
+          <CssBaseline />
           <AppContextProvider>
             <App />
           </AppContextProvider>

@@ -1,4 +1,5 @@
 import {
+    TodoCreateType,
     TodoDetailType,
     TodoStatusDetailType,
     TodoUpdateType,
@@ -50,8 +51,24 @@ export const updateTodo = async (
     throw new Error('Figure out what to do with this!');
 };
 
+export const createTodo = async (
+    token: string,
+    data: TodoCreateType
+): Promise<TodoDetailType> => {
+    const result = await todoApi.request<TodoDetailType>({
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        data,
+    });
+    if (result.status === StatusCode.SuccessOK) {
+        return result.data;
+    }
+    throw new Error('Figure out what to do with this!');
+};
+
 export default {
     getTodoList,
     getStatuses,
     updateTodo,
+    createTodo,
 };
