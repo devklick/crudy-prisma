@@ -1,7 +1,8 @@
 # To-do List
 
-This is a simple API (and eventually, a web app) written in TypeScript, which utilises:
+This is a web app and API written in TypeScript, which utilises:
 - [Nx Workspace](https://nx.dev/) as a monorepo 
+- [React](https://reactjs.org/) as the UI framework
 - [Express](https://expressjs.com/) as the API framework
 - [Zod](https://github.com/colinhacks/zod) for schema parsing & validation
 - [Prisma](https://www.prisma.io/) as an ORM
@@ -9,10 +10,10 @@ This is a simple API (and eventually, a web app) written in TypeScript, which ut
 - [Postgres](https://www.postgresql.org/) as the data store
 
 ## Purpose 
-It's purpose is purely for eduction and fun - I wanted to experiment with the technologies mentioned above. Because of that, it's an extremely simple application that is it's intentionally completely over-engineered. Because, why not?!
+It's purpose is purely for eduction and fun - I wanted to experiment with the technologies mentioned above. Because of that, it's an extremely simple application that is it's **intentionally completely over-engineered**. Because, why not?!
 
 ## The application
-The app is/will be a simple to-do list, where users can register accounts to create and track to-do's. At the time of writing this, it's simply an API with a couple of enpoints and a DB with a couple of tables. A front end will eventually be added.
+The app is a simple to-do tracker, where users can register accounts to create and track to-do's.
 
 ---
 
@@ -55,7 +56,7 @@ As mentioned previously, this is completely over-engineered. Below is an idea of
 ```
 npx nx graph
 ```
-![Image](docs/images/nx-graph-2022-02-12.png)   
+![Image](docs/images/nx-graph-2022-03-22.png)   
 ## [to-do-api](apps/to-do-api/)
 This is obviously the API. It is currently the main entry point in the repo.
 ## [api-schemas](libs/api-schemas/)
