@@ -1,15 +1,14 @@
 import { z } from 'zod';
 import { zDate, zRouteNumericId } from '@to-do/api-schemas/common';
-import { validator } from '@to-do/validators/user-validator';
 import { userSessionDetailSchema } from '@to-do/api-schemas/user-session-schema';
 
-const id = z.number().int();
-const createdOn = zDate();
-const updatedOn = zDate().optional().nullable();
-const username = z.string().max(64); // TODO: need to refind this to make sure it's a "sluggish" value
-const emailAddress = z.string().email().max(64);
-const emailAddressConfirmed = z.boolean().default(false);
-const password = z
+export const id = z.number().int();
+export const createdOn = zDate();
+export const updatedOn = zDate().optional().nullable();
+export const username = z.string().max(64); // TODO: need to refind this to make sure it's a "sluggish" value
+export const emailAddress = z.string().email().max(64);
+
+export const password = z
     .string()
     .min(8)
     .max(64)
@@ -18,22 +17,20 @@ const password = z
     .regex(/[A-Z]/, { message: 'At least one upper case letter required' })
     .regex(/\W/, { message: 'At least one special character required' });
 
-export const userCreateSchema = z.object({
-    // prettier-ignore
-    username: username.refine(async value => {
-        const valid = await validator.usernameAvailable(value);
-        return valid.success;
-    }, { message: 'Username already exists', }
-    ),
-    // prettier-ignore
-    emailAddress: emailAddress.refine(async value => {
-        const valid = await validator.emailAddressAvailable(value);
-        return valid.success;
-    }, { message: 'Email address already registered', }
-    ),
+export const userCreateSchemaBaseDefinition = z.object({
+    username,
+    emailAddress,
     password,
-    emailAddressConfirmed, // for dev/testing only
+    passwordConfirmed: z.string().max(64),
 });
+
+export const userCreateSchema = userCreateSchemaBaseDefinition.refine(
+    (obj) => obj.password === obj.passwordConfirmed,
+    {
+        message: 'Password does not match',
+        path: ['passwordConfirmed'],
+    }
+);
 
 export const userDetailSchema = z.object({
     id,
@@ -42,11 +39,13 @@ export const userDetailSchema = z.object({
     username,
     emailAddress,
     passwordHash: z.string(),
-    emailAddressConfirmed,
 });
 
 export const userGetSchema = z.object({
     id: zRouteNumericId(),
+    session: userSessionDetailSchema,
+});
+export const usersFindSchema = userDetailSchema.partial().extend({
     session: userSessionDetailSchema,
 });
 
@@ -54,8 +53,21 @@ export const userLoginSchema = z.object({
     password: z.string(),
     emailAddressOrUsername: username.or(emailAddress),
 });
+export const userLoginResultSchema = z.object({
+    token: z.string(),
+    expiry: z.date(),
+    session: userSessionDetailSchema,
+});
+export const userLogoutSchema = z.object({
+    session: userSessionDetailSchema,
+});
+export const userCreateResultSchema = z.object({});
 
 export type UserCreateType = z.infer<typeof userCreateSchema>;
 export type UserDetailType = z.infer<typeof userDetailSchema>;
 export type UserGetType = z.infer<typeof userGetSchema>;
+export type UsersFindType = z.infer<typeof usersFindSchema>;
 export type UserLoginType = z.infer<typeof userLoginSchema>;
+export type UserLoginResultType = z.infer<typeof userLoginResultSchema>;
+export type UserLogoutType = z.infer<typeof userLogoutSchema>;
+export type UserCreateResultType = z.infer<typeof userCreateResultSchema>;

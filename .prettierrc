@@ -1,5 +1,14 @@
 {
   "singleQuote": true,
   "useTabs": false,
-  "tabWidth": 4
+  "tabWidth": 4,
+  "jsxSingleQuote": true,
+  "overrides": [
+    {
+      "files": [ "*.tsx"],
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
 }

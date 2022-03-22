@@ -45,7 +45,8 @@
             "options": {
                 "buildTarget": "to-do-ui:build",
                 "hmr": true,
-                "proxyConfig": "apps/to-do-ui/proxy.conf.json"
+                "proxyConfig": "apps/to-do-ui/proxy.conf.json",
+                "port": 4200
             },
             "configurations": {
                 "production": {

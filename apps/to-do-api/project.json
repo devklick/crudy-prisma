@@ -9,8 +9,7 @@
             "options": {
                 "outputPath": "dist/apps/to-do-api",
                 "main": "apps/to-do-api/src/main.ts",
-                "tsConfig": "apps/to-do-api/tsconfig.app.json",
-                "assets": ["apps/to-do-api/src/assets"]
+                "tsConfig": "apps/to-do-api/tsconfig.app.json"
             },
             "configurations": {
                 "production": {
@@ -29,7 +28,8 @@
         "serve": {
             "executor": "@nrwl/node:execute",
             "options": {
-                "buildTarget": "to-do-api:build"
+                "buildTarget": "to-do-api:build",
+                "port": 9229
             }
         },
         "lint": {
