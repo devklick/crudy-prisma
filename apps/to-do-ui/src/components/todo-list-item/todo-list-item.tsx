@@ -5,7 +5,6 @@ import {
   Divider,
   ListItem,
   ListItemAvatar,
-  ListItemText,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -14,7 +13,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Typography,
+  Stack,
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { Box } from '@mui/system';
@@ -29,6 +28,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { UserDetailType } from '@to-do/api-schemas/user-schema';
 import todoService from '@to-do/services/to-do-service-fe';
 import { AppContext } from '../../context/app-context';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
 
 const stopProp = (e: React.MouseEvent<HTMLElement, MouseEvent> | undefined) =>
   e?.stopPropagation();
@@ -105,7 +106,7 @@ const TodoListItem = (props: TodoListItemProps) => {
     assignedToId: props.data.assignedToId,
     createdById: props.data.assignedToId,
     deadline: props.data.deadline,
-    description: props.data.description,
+    description: props.data.description ?? undefined,
     id: props.data.id,
   });
 
@@ -121,8 +122,8 @@ const TodoListItem = (props: TodoListItemProps) => {
 
   const handleStatusChange = async (event: SelectChangeEvent<number>) => {
     const newStatus = event.target.value as number;
-    if (newStatus !== status) {
-      const apiResult = await todoService.updateTodo(auth?.authToken ?? '', {
+    if (newStatus !== status && auth?.authToken) {
+      const apiResult = await todoService.updateTodo(auth.authToken, {
         ...data,
         status: newStatus,
       });
@@ -132,8 +133,8 @@ const TodoListItem = (props: TodoListItemProps) => {
   };
   const handleAssignedToChange = async (event: SelectChangeEvent<number>) => {
     const newUser = event.target.value as number;
-    if (newUser !== assignedTo) {
-      const apiResult = await todoService.updateTodo(auth?.authToken ?? '', {
+    if (newUser !== assignedTo && auth?.authToken) {
+      const apiResult = await todoService.updateTodo(auth.authToken, {
         ...data,
         assignedToId: newUser,
       });
@@ -143,12 +144,14 @@ const TodoListItem = (props: TodoListItemProps) => {
   };
 
   const onSubmit = async (todoUpdate: TodoUpdateType) => {
-    setEditMode(false);
-    const apiResult = await todoService.updateTodo(
-      auth?.authToken ?? '',
-      todoUpdate
-    );
-    setData(apiResult);
+    if (auth?.authToken) {
+      setEditMode(false);
+      const apiResult = await todoService.updateTodo(
+        auth.authToken,
+        todoUpdate
+      );
+      setData(apiResult);
+    }
   };
 
   return (
@@ -170,95 +173,123 @@ const TodoListItem = (props: TodoListItemProps) => {
                   assignedTo,
                   handleAssignedToChange
                 )}
-              {editMode ? (
-                <Controller
-                  name='title'
-                  control={control}
-                  render={({ field: { ref, ...field } }) => (
-                    <TextField
-                      label='Title'
-                      type='text'
-                      fullWidth
-                      variant='standard'
-                      autoComplete='title'
-                      autoFocus
-                      onClick={stopProp}
-                      error={Boolean(errors.title)}
-                      helperText={errors.title?.message}
-                      inputRef={ref}
-                      {...field}
-                    />
-                  )}
-                />
-              ) : (
-                <ListItemText primary={data.title} />
-              )}
+              <Controller
+                name='title'
+                control={control}
+                render={({ field: { ref, ...field } }) => (
+                  <TextField
+                    label='Title'
+                    type='text'
+                    fullWidth
+                    variant='standard'
+                    autoComplete='title'
+                    InputLabelProps={{ shrink: true }}
+                    InputProps={{ disableUnderline: !editMode }}
+                    disabled={!editMode}
+                    onClick={(e) => {
+                      editMode && stopProp(e);
+                    }}
+                    error={Boolean(errors.title)}
+                    helperText={errors.title?.message}
+                    inputRef={ref}
+                    {...field}
+                  />
+                )}
+              />
               {props.statuses.length &&
                 getStatusSelectList(props.statuses, status, handleStatusChange)}
             </AccordionSummary>
 
             <AccordionDetails>
-              {editMode ? (
-                <Controller
-                  name='description'
-                  control={control}
-                  render={({ field: { ref, ...field } }) => (
-                    <TextField
-                      label='Description'
-                      type='text'
-                      fullWidth
-                      variant='standard'
-                      autoFocus
-                      multiline
-                      onClick={stopProp}
-                      error={Boolean(errors.description)}
-                      helperText={errors.description?.message}
-                      inputRef={ref}
-                      {...field}
-                    />
-                  )}
-                />
-              ) : (
-                <Typography variant='body1' style={{ whiteSpace: 'pre-line' }}>
-                  {data.description}
-                </Typography>
-              )}
-              {expanded && !editMode && (
-                <Box textAlign='right' sx={{ paddingBottom: 2 }}>
-                  <Button
-                    variant='contained'
-                    onClick={(e) => {
-                      stopProp(e);
-                      setEditMode(true);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                </Box>
-              )}
-              {editMode && (
-                <Box textAlign='right' sx={{ paddingBottom: 2 }}>
-                  <Button
-                    type='submit'
-                    variant='contained'
-                    onClick={(e) => {
-                      stopProp(e);
-                      setEditMode(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type='submit'
-                    variant='contained'
-                    onClick={(e) => {
-                      stopProp(e);
-                    }}
-                  >
-                    Save
-                  </Button>
-                </Box>
-              )}
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                <Stack spacing={3}>
+                  <Controller
+                    name='description'
+                    control={control}
+                    render={({ field: { ref, ...field } }) => (
+                      <TextField
+                        label='Description'
+                        type='text'
+                        fullWidth
+                        variant='standard'
+                        InputLabelProps={{ shrink: true }}
+                        InputProps={{ disableUnderline: !editMode }}
+                        disabled={!editMode}
+                        multiline
+                        onClick={stopProp}
+                        error={Boolean(errors.description)}
+                        helperText={errors.description?.message}
+                        inputRef={ref}
+                        {...field}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name='deadline'
+                    control={control}
+                    render={({ field: { ref, ...field } }) => (
+                      <DesktopDatePicker
+                        label='Deadline'
+                        inputFormat='dd/MM/yyyy'
+                        value={field.value}
+                        onChange={field.onChange}
+                        InputProps={{ disableUnderline: !editMode }}
+                        disabled={!editMode}
+                        inputRef={ref}
+                        renderInput={(params) => (
+                          <TextField
+                            variant='standard'
+                            InputLabelProps={{ shrink: true }}
+                            error={Boolean(errors.deadline)}
+                            helperText={errors.deadline?.message}
+                            inputRef={ref}
+                            {...params}
+                          />
+                        )}
+                      />
+                    )}
+                  />
+
+                  <Stack spacing={2} textAlign='right' direction='row-reverse'>
+                    {!editMode && (
+                      <Button
+                        variant='contained'
+                        onClick={(e) => {
+                          stopProp(e);
+                          setEditMode(true);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                    {editMode && (
+                      <>
+                        <Button
+                          size='small'
+                          type='submit'
+                          variant='contained'
+                          onClick={(e) => {
+                            stopProp(e);
+                            setEditMode(false);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type='submit'
+                          variant='contained'
+                          onClick={(e) => {
+                            stopProp(e);
+                          }}
+                        >
+                          Save
+                        </Button>
+                      </>
+                    )}
+                  </Stack>
+                </Stack>
+              </LocalizationProvider>
             </AccordionDetails>
           </Accordion>
         </Box>

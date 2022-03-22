@@ -13,7 +13,9 @@ import { useContext, useState } from 'react';
 import { AppContext } from '../../context/app-context';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface NavMenuProps {}
+export interface NavMenuProps {
+  currentUsername: string;
+}
 const NavMenu = (props: NavMenuProps) => {
   const { logout } = useContext(AppContext);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -45,7 +47,9 @@ const NavMenu = (props: NavMenuProps) => {
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>
+              {props.currentUsername.substring(0, 1)}
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>

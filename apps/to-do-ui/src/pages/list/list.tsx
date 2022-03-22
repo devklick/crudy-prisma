@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../context/app-context';
 import { List as MuiList } from '@mui/material';
 import TodoListItem from '../../components/todo-list-item';
@@ -17,13 +17,15 @@ import NavMenu from '../../components/nav-menu';
 export interface ListProps {}
 
 const List = () => {
-  const { assumeLoggedIn, loadingStoredAuth, auth } = useContext(AppContext);
+  const { assumeLoggedIn, loadingStoredAuth, auth, session } =
+    useContext(AppContext);
   const loggedIn = assumeLoggedIn();
   const navigate = useNavigate();
 
   const [todos, setTodos] = useState<TodoDetailType[]>([]);
   const [users, setUsers] = useState<UserDetailType[]>([]);
   const [statuses, setStatueses] = useState<TodoStatusDetailType[]>([]);
+  const currentUserRef = useRef<UserDetailType | null>(null);
 
   const getTodos = async (token: string) => {
     setTodos(await todoService.getTodoList(token));
@@ -35,12 +37,20 @@ const List = () => {
 
   useEffect(() => {
     const getUsers = async (token: string) => {
-      setUsers(await userService.getUsers(token));
+      const _users = await userService.getUsers(token);
+      setUsers(_users);
+
+      const currentUser = _users.find(
+        (u) => session && u.id === session.userId
+      );
+      if (currentUser) {
+        currentUserRef.current = currentUser;
+      }
     };
     if (auth?.authToken) {
       getUsers(auth.authToken);
     }
-  }, [auth]);
+  }, [auth, session]);
 
   useEffect(() => {
     const getStatuses = async (token: string) => {
@@ -66,7 +76,7 @@ const List = () => {
 
   return (
     <>
-      <NavMenu />
+      <NavMenu currentUsername={currentUserRef.current?.username ?? 'X'} />
       <MuiList sx={{ width: '100%', maxWidth: '100%' }}>
         <CreateTodoListItem
           todoCreated={handleTodoCreated}

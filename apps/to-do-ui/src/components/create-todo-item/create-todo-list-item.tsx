@@ -13,6 +13,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
   TextField,
   Tooltip,
 } from '@mui/material';
@@ -27,6 +28,8 @@ import todoService from '@to-do/services/to-do-service-fe';
 import { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AppContext } from '../../context/app-context';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
 
 export interface CreateTodoListItemProps {
   todoCreated: () => void;
@@ -98,8 +101,8 @@ const CreateTodoListItem = (props: CreateTodoListItemProps) => {
     status: StatusIds.ToDo,
     assignedToId: session?.userId,
     title: undefined,
-    deadline: undefined,
-    description: undefined,
+    deadline: null,
+    description: null,
     session: undefined,
   };
   const [data, setData] = useState<Partial<TodoCreateType>>(defaultData);
@@ -152,7 +155,7 @@ const CreateTodoListItem = (props: CreateTodoListItemProps) => {
 
   return (
     <>
-      <ListItem>
+      <ListItem sx={{ marginBottom: 2 }}>
         <Box
           sx={{ width: '100%' }}
           component='form'
@@ -161,6 +164,10 @@ const CreateTodoListItem = (props: CreateTodoListItemProps) => {
           <Accordion
             expanded={expanded}
             onChange={() => setExpanded(!expanded)}
+            sx={{
+              boxShadow:
+                'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;',
+            }}
           >
             <AccordionSummary expandIcon={<ExpandMore />}>
               {props.users?.length &&
@@ -179,7 +186,7 @@ const CreateTodoListItem = (props: CreateTodoListItemProps) => {
                     fullWidth
                     variant='standard'
                     autoComplete='title'
-                    autoFocus
+                    InputLabelProps={{ shrink: true }}
                     onClick={stopProp}
                     error={Boolean(errors.title)}
                     helperText={errors.title?.message}
@@ -197,48 +204,79 @@ const CreateTodoListItem = (props: CreateTodoListItemProps) => {
             </AccordionSummary>
 
             <AccordionDetails>
-              <Controller
-                name='description'
-                control={control}
-                render={({ field: { ref, ...field } }) => (
-                  <TextField
-                    label='Description'
-                    type='text'
-                    fullWidth
-                    variant='standard'
-                    autoFocus
-                    multiline
-                    onClick={stopProp}
-                    error={Boolean(errors.description)}
-                    helperText={errors.description?.message}
-                    inputRef={ref}
-                    {...field}
+              <Stack spacing={3}>
+                <Controller
+                  name='description'
+                  control={control}
+                  render={({ field: { ref, ...field } }) => (
+                    <TextField
+                      label='Description'
+                      type='text'
+                      fullWidth
+                      variant='standard'
+                      InputLabelProps={{ shrink: true }}
+                      multiline
+                      onClick={stopProp}
+                      error={Boolean(errors.description)}
+                      helperText={errors.description?.message}
+                      inputRef={ref}
+                      {...field}
+                    />
+                  )}
+                />
+                <LocalizationProvider dateAdapter={DateAdapter}>
+                  <Controller
+                    name='deadline'
+                    control={control}
+                    render={({ field: { ref, ...field } }) => (
+                      <DesktopDatePicker
+                        label='Deadline'
+                        inputFormat='dd/MM/yyyy'
+                        value={field.value}
+                        onChange={field.onChange}
+                        inputRef={ref}
+                        renderInput={(params) => (
+                          <TextField
+                            variant='standard'
+                            InputLabelProps={{ shrink: true }}
+                            error={Boolean(errors.deadline)}
+                            helperText={errors.deadline?.message}
+                            inputRef={ref}
+                            {...params}
+                          />
+                        )}
+                      />
+                    )}
                   />
-                )}
-              />
-              {expanded && (
-                <Box textAlign='right' sx={{ paddingBottom: 2 }}>
-                  <Button
-                    type='submit'
-                    variant='contained'
-                    onClick={(e) => {
-                      stopProp(e);
-                      setExpanded(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type='submit'
-                    variant='contained'
-                    onClick={(e) => {
-                      stopProp(e);
-                    }}
-                  >
-                    Save
-                  </Button>
-                </Box>
-              )}
+                </LocalizationProvider>
+
+                <Stack spacing={2} textAlign='right' direction='row-reverse'>
+                  {expanded && (
+                    <>
+                      <Button
+                        size='small'
+                        type='submit'
+                        variant='contained'
+                        onClick={(e) => {
+                          stopProp(e);
+                          setExpanded(false);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type='submit'
+                        variant='contained'
+                        onClick={(e) => {
+                          stopProp(e);
+                        }}
+                      >
+                        Save
+                      </Button>
+                    </>
+                  )}
+                </Stack>
+              </Stack>
             </AccordionDetails>
           </Accordion>
         </Box>
