@@ -13,7 +13,7 @@ This is a web app and API written in TypeScript, which utilises:
 It's purpose is purely for eduction and fun - I wanted to experiment with the technologies mentioned above. Because of that, it's an extremely simple application that is it's **intentionally completely over-engineered**. Because, why not?!
 
 ## The application
-The app is a simple to-do tracker, where users can register accounts to create and track to-do's.
+The app is a simple to-do tracker, where users can register accounts to create and track to-do's. Check out the [screenshots](/docs/images/screenshots/) for an idea of what it looks like.
 
 ---
 
